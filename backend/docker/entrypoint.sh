@@ -5,10 +5,9 @@ echo "==> Starting Guidance Academy API..."
 
 cd /var/www/html
 
-# Set PostgreSQL SSL mode BEFORE anything else
-export PGSSLMODE=require
-export PGSSLROOTCERT=system
-echo "==> PostgreSQL SSL mode set to: require"
+# Set PostgreSQL SSL mode to prefer (will try SSL but fall back if needed)
+export PGSSLMODE=prefer
+echo "==> PostgreSQL SSL mode set to: prefer"
 
 # Generate APP_KEY if not set
 if [ -z "$APP_KEY" ]; then
@@ -21,7 +20,6 @@ echo "==> Discovering packages..."
 php artisan package:discover --ansi || true
 
 # DO NOT cache config in production - it breaks SSL and other runtime configs
-# Cache will use whatever is in .env at build time, not runtime env vars
 echo "==> Skipping config cache to use runtime environment variables"
 
 # Run migrations with SSL environment set
