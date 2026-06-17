@@ -11,11 +11,17 @@ if [ -z "$APP_KEY" ]; then
   php artisan key:generate --force
 fi
 
-# Cache config for performance
-echo "==> Caching configuration..."
-php artisan config:cache || true
-php artisan route:cache  || true
-php artisan view:cache   || true
+# Discover packages (important after deployment)
+echo "==> Discovering packages..."
+php artisan package:discover --ansi || true
+
+# Cache config for performance (only in production)
+if [ "$APP_ENV" = "production" ]; then
+  echo "==> Caching configuration..."
+  php artisan config:cache || true
+  php artisan route:cache  || true
+  php artisan view:cache   || true
+fi
 
 # Run migrations
 echo "==> Running migrations..."

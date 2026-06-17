@@ -5,18 +5,24 @@
 ## 📁 Project Structure
 ```
 guidance-academy/
-├── frontend/          ← Next.js 14 → deploy to Vercel
-├── backend/           ← Laravel 11 + Docker → deploy to Render
+├── frontend/              ← Next.js 14 → deploy to Vercel
+├── backend/               ← Laravel 11 + Docker → deploy to Render
 ├── README.md
-└── DEPLOYMENT_GUIDE.md  ← 📘 Complete deployment instructions
+├── QUICK_START.md         ← ⚡ 15-minute quick deploy
+├── DEPLOYMENT_GUIDE.md    ← 📘 Complete deployment instructions
+├── DATABASE_INFO.md       ← 🗄️ Database connection details
+└── TROUBLESHOOTING.md     ← 🔧 Common issues & solutions
 ```
 
 ## 🚀 Quick Deploy
 
-**👉 See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for detailed step-by-step instructions**
+**👉 See [QUICK_START.md](./QUICK_START.md) for 15-minute deployment**  
+**👉 See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for detailed step-by-step instructions**  
+**👉 See [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) if you encounter issues**
 
 ### Quick Links:
 - 🔗 **GitHub Repo**: https://github.com/suleyman0931/Guidance-Language-Skills-Academy
+- 🗄️ **Database Info**: [DATABASE_INFO.md](./DATABASE_INFO.md)
 - 🌐 **Deploy Backend**: [render.com](https://render.com) (Free tier)
 - 🌐 **Deploy Frontend**: [vercel.com](https://vercel.com) (Free tier)
 

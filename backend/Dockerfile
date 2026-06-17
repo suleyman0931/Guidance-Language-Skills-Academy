@@ -14,19 +14,36 @@ COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy composer files
-COPY composer.json ./
+# Copy composer files first
+COPY composer.json composer.lock* ./
 
-# Copy the rest of the application
-COPY . .
+# Copy application files needed for composer scripts
+COPY artisan ./
+COPY bootstrap/ bootstrap/
+COPY config/ config/
+COPY database/ database/
+COPY app/ app/
+COPY routes/ routes/
+COPY public/ public/
 
-# Install dependencies (composer.lock will be generated if missing)
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# Install dependencies (skip scripts during install, run them after)
+RUN composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction \
+    --no-scripts \
+    --prefer-dist
 
-RUN composer dump-autoload --optimize
+# Now run the autoload dump which triggers package discovery
+RUN composer dump-autoload --optimize --no-scripts
 
+# Copy docker configuration files
+COPY docker/ docker/
+
+# Create necessary directories and set permissions
 RUN mkdir -p storage/framework/{cache,sessions,views} \
-             storage/logs bootstrap/cache \
+             storage/logs \
+             bootstrap/cache \
     && chown -R www-data:www-data /var/www/html \
     && chmod -R 755 storage bootstrap/cache
 
