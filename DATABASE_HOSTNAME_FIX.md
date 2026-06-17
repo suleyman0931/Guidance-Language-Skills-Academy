@@ -2,13 +2,22 @@
 
 ## ❌ Error You're Seeing:
 
+**Error 1: Hostname not resolved**
 ```
 SQLSTATE[08006] [7] could not translate host name "dpg-d8p0f937u1sc73nh8rajp-a" to address: Name does not resolve
 ```
 
+**Error 2: SSL connection closed**
+```
+SQLSTATE[08006] [7] connection to server at "dpg-d8p0f937u1sc73nh8rajp-a.oregon-postgres.render.com" (35.227.164.209), port 5432 failed: SSL connection has been closed unexpectedly
+```
+
 ## 🎯 The Problem:
 
-The short internal hostname `dpg-d8p0f937u1sc73nh8rajp-a` doesn't resolve. You need to use the **full hostname** with the region suffix.
+1. The short internal hostname `dpg-d8p0f937u1sc73nh8rajp-a` doesn't resolve
+2. Render PostgreSQL requires **SSL connections** but Laravel isn't configured for it
+
+You need to use the **full hostname** with the region suffix AND enable SSL mode.
 
 ---
 
@@ -28,7 +37,12 @@ DB_HOST=dpg-d8p0f937u1sc73nh8rajp-a
 DB_HOST=dpg-d8p0f937u1sc73nh8rajp-a.oregon-postgres.render.com
 ```
 
-This adds the `.oregon-postgres.render.com` suffix which makes it resolvable.
+**Also add SSL mode:**
+```
+DB_SSLMODE=require
+```
+
+This adds the `.oregon-postgres.render.com` suffix and enables required SSL mode.
 
 ---
 
@@ -43,11 +57,14 @@ This is cleaner and more reliable. Replace all separate DB_* variables with a si
 - `DB_DATABASE`
 - `DB_USERNAME`
 - `DB_PASSWORD`
+- `DB_SSLMODE` (if present)
 
 **Add this single variable:**
 ```
-DATABASE_URL=postgresql://guidance_academy_user:adDOsx4sJMolmeSTENMboI18XzqJkZn@dpg-d8p0f937u1sc73nh8rajp-a.oregon-postgres.render.com:5432/guidance_academy
+DATABASE_URL=postgresql://guidance_academy_user:adDOsx4sJMolmeSTENMboI18XzqJkZn@dpg-d8p0f937u1sc73nh8rajp-a.oregon-postgres.render.com:5432/guidance_academy?sslmode=require
 ```
+
+Note the `?sslmode=require` at the end - this is **critical** for Render PostgreSQL connections.
 
 ---
 
@@ -61,8 +78,11 @@ DATABASE_URL=postgresql://guidance_academy_user:adDOsx4sJMolmeSTENMboI18XzqJkZn@
 4. Find `DB_HOST` variable
 5. Click **Edit**
 6. Change value to: `dpg-d8p0f937u1sc73nh8rajp-a.oregon-postgres.render.com`
-7. Click **Save Changes**
-8. Service will automatically redeploy (wait 5-10 minutes)
+7. **Add another variable** (click "Add Environment Variable"):
+   - Key: `DB_SSLMODE`
+   - Value: `require`
+8. Click **Save Changes**
+9. Service will automatically redeploy (wait 5-10 minutes)
 
 ### If Using Option 2 (Use DATABASE_URL):
 
@@ -78,7 +98,7 @@ DATABASE_URL=postgresql://guidance_academy_user:adDOsx4sJMolmeSTENMboI18XzqJkZn@
    - `DB_PASSWORD`
 5. **Add new variable**:
    - Key: `DATABASE_URL`
-   - Value: `postgresql://guidance_academy_user:adDOsx4sJMolmeSTENMboI18XzqJkZn@dpg-d8p0f937u1sc73nh8rajp-a.oregon-postgres.render.com:5432/guidance_academy`
+   - Value: `postgresql://guidance_academy_user:adDOsx4sJMolmeSTENMboI18XzqJkZn@dpg-d8p0f937u1sc73nh8rajp-a.oregon-postgres.render.com:5432/guidance_academy?sslmode=require`
 6. Click **Save Changes**
 7. Service will automatically redeploy (wait 5-10 minutes)
 
