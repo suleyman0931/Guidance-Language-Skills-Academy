@@ -41,8 +41,7 @@ export default function LoginPage() {
       style={{ background: 'linear-gradient(135deg,#0D1B4B,#1a2d6b,#0D1B4B)' }}>
       <div className="w-full max-w-sm animate-fsu">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center font-black text-xl mx-auto mb-4"
-            style={{ background: 'linear-gradient(135deg,#C4A84F,#F0D080)', color: '#0D1B4B' }}>GA</div>
+          <img src="/logo-icon.png" alt="Guidance Academy" className="w-20 h-20 mx-auto mb-4" />
           <h1 className="text-2xl font-black text-white mb-1">{t.title}</h1>
           <p className="text-white/50 text-sm">{t.sub}</p>
         </div>

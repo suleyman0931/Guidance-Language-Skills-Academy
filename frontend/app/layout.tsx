@@ -36,8 +36,7 @@ function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
 
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 flex-shrink-0">
-          <div className="w-9 h-9 rounded-full flex items-center justify-center font-black text-sm flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg,#C4A84F,#F0D080)', color: '#0D1B4B' }}>GA</div>
+          <img src="/logo-icon.png" alt="GA" className="w-10 h-10 flex-shrink-0" />
           <div className="hidden sm:block">
             <p className="text-white font-black text-sm tracking-widest leading-none">GUIDANCE</p>
             <p style={{ color: '#C4A84F', fontSize: '8px', letterSpacing: '.15em', textTransform: 'uppercase', lineHeight: 1.2 }}>
@@ -171,8 +170,7 @@ function SiteFooter({ lang }: { lang: Lang }) {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-xs"
-                style={{ background: 'linear-gradient(135deg,#C4A84F,#F0D080)', color: '#0D1B4B' }}>GA</div>
+              <img src="/logo-icon.png" alt="GA" className="w-9 h-9" />
               <span className="text-white font-black text-sm tracking-widest">GUIDANCE</span>
             </div>
             <p className="text-white/40 text-xs leading-relaxed">{t.tagline}</p>

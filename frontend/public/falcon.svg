@@ -5,7 +5,13 @@
  width="1024.000000pt" height="1024.000000pt" viewBox="0 0 1024.000000 1024.000000"
  preserveAspectRatio="xMidYMid meet">
 <g transform="translate(0.000000,1024.000000) scale(0.100000,-0.100000)"
-fill="#000000" stroke="none">
+fill="#0A2647" stroke="none">
+<defs>
+  <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" style="stop-color:#C4A84F;stop-opacity:1" />
+    <stop offset="100%" style="stop-color:#F0D080;stop-opacity:1" />
+  </linearGradient>
+</defs>
 <path d="M4775 9505 c-624 -69 -1216 -293 -1720 -653 -166 -119 -279 -216
 -456 -392 -300 -299 -511 -590 -699 -966 -91 -182 -121 -254 -191 -461 -215
 -633 -248 -1304 -94 -1913 82 -326 215 -643 385 -920 96 -157 239 -359 254
