@@ -13,6 +13,31 @@ Route::get('/health', fn() => response()->json([
     'timestamp' => now()->toIso8601String(),
 ]));
 
+// Debug endpoint - check database
+Route::get('/debug/tables', function() {
+    try {
+        $tables = \DB::select("SELECT table_name FROM information_schema.tables WHERE table_schema='public' ORDER BY table_name");
+        $counts = [
+            'registrations' => \DB::table('registrations')->count(),
+            'users' => \DB::table('users')->count(),
+            'posts' => \DB::table('posts')->count(),
+            'promotional_images' => \DB::table('promotional_images')->count(),
+            'personal_access_tokens' => \DB::table('personal_access_tokens')->count(),
+        ];
+        return response()->json([
+            'status' => 'ok',
+            'tables' => $tables,
+            'counts' => $counts,
+            'admin_exists' => \DB::table('users')->where('username', 'admin')->exists(),
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+});
+
 // Public: registration
 Route::post('/registrations', [RegistrationController::class, 'store']);
 
