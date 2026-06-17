@@ -17,16 +17,10 @@ WORKDIR /var/www/html
 # Copy composer files first
 COPY composer.json composer.lock* ./
 
-# Copy application files needed for composer scripts
-COPY artisan ./
-COPY bootstrap/ bootstrap/
-COPY config/ config/
-COPY database/ database/
-COPY app/ app/
-COPY routes/ routes/
-COPY public/ public/
+# Copy entire application (simpler and more reliable)
+COPY . .
 
-# Install dependencies (skip scripts during install, run them after)
+# Install dependencies (skip scripts during install)
 RUN composer install \
     --no-dev \
     --optimize-autoloader \
@@ -34,18 +28,16 @@ RUN composer install \
     --no-scripts \
     --prefer-dist
 
-# Now run the autoload dump which triggers package discovery
+# Run autoload dump separately
 RUN composer dump-autoload --optimize --no-scripts
-
-# Copy docker configuration files
-COPY docker/ docker/
 
 # Create necessary directories and set permissions
 RUN mkdir -p storage/framework/{cache,sessions,views} \
              storage/logs \
              bootstrap/cache \
     && chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 storage bootstrap/cache
+    && chmod -R 755 storage bootstrap/cache \
+    && chmod +x artisan
 
 COPY docker/nginx.conf       /etc/nginx/nginx.conf
 COPY docker/supervisord.conf /etc/supervisord.conf
