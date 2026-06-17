@@ -14,10 +14,14 @@ COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-scripts --no-autoloader --optimize-autoloader
+# Copy composer files
+COPY composer.json ./
 
+# Copy the rest of the application
 COPY . .
+
+# Install dependencies (composer.lock will be generated if missing)
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 RUN composer dump-autoload --optimize
 

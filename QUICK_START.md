@@ -3,23 +3,34 @@
 ## Backend → Render (5 minutes)
 
 1. **Sign up**: [render.com](https://render.com) with GitHub
-2. **New PostgreSQL**: Name: `guidance-academy-db`, Plan: Free (requires credit card)
+2. **New PostgreSQL**: 
+   - Name: `guidance-academy-db`
+   - Database: `guidance_academy`
+   - Plan: Free (requires credit card)
+   - **Save the connection details!**
 3. **New Web Service**: 
    - Repo: `Guidance-Language-Skills-Academy`
    - Root: `backend`
    - Runtime: Docker
-4. **Add env vars**:
+4. **Add env vars** (use your actual database credentials):
    ```
    APP_KEY=base64:YOUR_GENERATED_KEY
    APP_ENV=production
    APP_DEBUG=false
    DB_CONNECTION=pgsql
-   DB_HOST=[from database]
+   DB_HOST=dpg-xxxxxx-a
    DB_PORT=5432
    DB_DATABASE=guidance_academy
-   DB_USERNAME=[from database]
-   DB_PASSWORD=[from database]
+   DB_USERNAME=guidance_academy_user
+   DB_PASSWORD=your_actual_password
    FRONTEND_URL=https://guidance-academy.vercel.app
+   ```
+   
+   **Example from screenshot:**
+   ```
+   DB_HOST=dpg-d8p0f937u1sc73nh8rajp-a
+   DB_USERNAME=guidance_academy_user
+   DB_PASSWORD=adDOsx4sJMolmeSTENMboI18XzqJkZn
    ```
 5. **Deploy** → Wait for build → Open **Shell** tab → Run:
    ```bash

@@ -30,13 +30,21 @@ Before deploying, make sure you have:
    - **PostgreSQL Version**: 16
    - **Plan**: **Free** (requires credit card for verification)
 3. Click **"Create Database"**
-4. **Copy the connection details** from the database info page:
-   - **Internal Database URL** (starts with `postgres://`)
-   - **Host** (e.g., `dpg-xxxxx-a.oregon-postgres.render.com`)
-   - **Port**: `5432`
-   - **Database**: `guidance_academy`
-   - **Username**: (auto-generated)
-   - **Password**: (auto-generated)
+4. **Save the connection details** from the database info page (Connections section):
+
+**Example from your database:**
+- **Hostname**: `dpg-d8p0f937u1sc73nh8rajp-a`
+- **Port**: `5432`
+- **Database**: `guidance_academy`
+- **Username**: `guidance_academy_user`
+- **Password**: `adDOsx4sJMolmeSTENMboI18XzqJkZn` (your actual password will be different)
+- **Internal Database URL**: `postgresql://guidance_academy_user:adDOsx4sJMolmeSTENMboI18XzqJkZn@dpg-d8p0f937u1sc73nh8rajp-a/guidance_academy`
+- **External Database URL**: `postgresql://guidance_academy_user:adDOsx4sJMolmeSTENMboI18XzqJkZn@dpg-d8p0f937u1sc73nh8rajp-a.oregon-postgres.render.com/guidance_academy`
+
+> **Important**: 
+> - Use the **Internal Database URL** for your web service (faster, no external network)
+> - The **External URL** is for connecting from your local machine
+> - Keep these credentials secure!
 
 > **Note**: Render requires a credit card even for free tier. The free database includes 256 MB RAM and 1 GB storage.
 
@@ -63,12 +71,17 @@ In the **"Environment"** section, add these variables:
 | `APP_KEY` | `base64:GENERATE_THIS` | See instructions below ⬇️ |
 | `APP_URL` | `https://guidance-academy-api.onrender.com` | Your Render URL |
 | `DB_CONNECTION` | `pgsql` | Database type (PostgreSQL) |
-| `DB_HOST` | *from database info* | Database host |
+| `DB_HOST` | `dpg-d8p0f937u1sc73nh8rajp-a` | From database Connections |
 | `DB_PORT` | `5432` | Database port |
 | `DB_DATABASE` | `guidance_academy` | Database name |
-| `DB_USERNAME` | *from database info* | Database username |
-| `DB_PASSWORD` | *from database info* | Database password |
+| `DB_USERNAME` | `guidance_academy_user` | From database Connections |
+| `DB_PASSWORD` | `adDOsx4sJMolmeSTENMboI18XzqJkZn` | From database Connections |
 | `FRONTEND_URL` | `https://guidance-academy.vercel.app` | Update after deploying frontend |
+
+> **Pro Tip**: Instead of adding each variable individually, you can also use the **Internal Database URL** by adding:
+> - `DATABASE_URL` = `postgresql://guidance_academy_user:adDOsx4sJMolmeSTENMboI18XzqJkZn@dpg-d8p0f937u1sc73nh8rajp-a/guidance_academy`
+> 
+> Laravel will automatically parse this URL if you configure it in your `.env` file.
 
 #### 🔑 Generate APP_KEY:
 You need to generate a Laravel application key. Two options:
@@ -154,6 +167,27 @@ Click **"Save Changes"** - Render will redeploy automatically.
 
 ## 🧪 Testing Your Deployment
 
+### Connect to Database Locally (Optional)
+
+You can connect to your Render PostgreSQL database from your local machine using the **External Database URL**:
+
+```bash
+# Using psql command line
+psql "postgresql://guidance_academy_user:adDOsx4sJMolmeSTENMboI18XzqJkZn@dpg-d8p0f937u1sc73nh8rajp-a.oregon-postgres.render.com/guidance_academy"
+
+# Or using the PSQL Command from Render dashboard:
+PGPASSWORD=adDOsx4sJMolmeSTENMboI18XzqJkZn psql -h dpg-d8p0f937u1sc73nh8rajp-a.oregon-postgres.render.com -U guidance_academy_user guidance_academy
+```
+
+**Using GUI tools:**
+- **TablePlus**: Use External Database URL
+- **pgAdmin**: 
+  - Host: `dpg-d8p0f937u1sc73nh8rajp-a.oregon-postgres.render.com`
+  - Port: `5432`
+  - Database: `guidance_academy`
+  - Username: `guidance_academy_user`
+  - Password: `adDOsx4sJMolmeSTENMboI18XzqJkZn`
+
 ### Test Backend API
 ```bash
 # Health check
@@ -173,6 +207,13 @@ curl https://guidance-academy-api.onrender.com/api/registrations
 ## 🔧 Troubleshooting
 
 ### Backend Issues
+
+**PostgreSQL connection failed:**
+- Verify you're using the **Internal Database URL** (without `.oregon-postgres.render.com`) for your web service
+- Check that all database credentials are copied exactly (no extra spaces)
+- Ensure `DB_CONNECTION=pgsql` not `mysql` or `postgres`
+- Verify the database is in the same region as your web service
+- Check Render logs for specific connection errors
 
 **Database connection failed:**
 - Check that DB credentials in Render match your MySQL database
