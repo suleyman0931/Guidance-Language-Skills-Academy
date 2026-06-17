@@ -52,9 +52,13 @@ export default function AboutPage() {
         <div className="glass mt-6 p-8 flex flex-col sm:flex-row gap-8 items-start">
           {/* Avatar */}
           <div className="flex-shrink-0 flex flex-col items-center gap-3">
-            <div className="w-24 h-24 rounded-2xl flex items-center justify-center font-black text-3xl"
-              style={{ background: 'linear-gradient(135deg,#C4A84F,#F0D080)', color: '#0D1B4B' }}>
-              SA
+            <div className="w-24 h-24 rounded-2xl overflow-hidden"
+              style={{ border: '2px solid rgba(196,168,79,0.3)' }}>
+              <img 
+                src="/suleyman.png" 
+                alt="Suleyman Abdu"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="text-center">
               <p className="text-white font-black text-lg leading-tight">{t.trainerName}</p>
