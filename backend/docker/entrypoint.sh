@@ -18,6 +18,11 @@ if [ -z "$APP_KEY" ]; then
   echo "⚠️  WARNING: APP_KEY was generated at runtime. Set it as environment variable to persist!"
 fi
 
+# Temporarily enable debug mode to diagnose issues
+export APP_DEBUG=true
+export APP_ENV=production
+echo "==> Debug mode enabled for diagnostics"
+
 # Discover packages (important after deployment)
 echo "==> Discovering packages..."
 php artisan package:discover --ansi || true
