@@ -6,13 +6,10 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        env('FRONTEND_URL', 'https://GuidanceAcademy.vercel.app'),
-        'http://localhost:3000',
+        env('FRONTEND_URL', 'https://guidanceacademy.vercel.app'),
     ],
 
-    'allowed_origins_patterns' => [
-        '/^https:\/\/.*\.vercel\.app$/',
-    ],
+    'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],
 
