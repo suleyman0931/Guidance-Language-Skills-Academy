@@ -226,7 +226,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <title>Guidance Language & Skills Academy</title>
         <meta name="description" content="Summer English Grammar, Speaking & Presentation Skills Course — Harbu, Ethiopia" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/logo.png" type="image/png" />
+        <link rel="icon" href="/logo-icon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/logo.png" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
       </head>
