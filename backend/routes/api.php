@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PromotionalImageController;
 use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,9 @@ Route::get('/auth/check-username/{username}', [AuthController::class, 'checkUser
 
 // Public: posts
 Route::get('/posts', [PostController::class, 'publicIndex']);
+
+// Public: promotional images
+Route::get('/promotional-images', [PromotionalImageController::class, 'index']);
 
 // Authenticated
 Route::middleware('auth:sanctum')->group(function () {
@@ -44,4 +48,11 @@ Route::middleware(['auth:sanctum', \App\Http\Middleware\AdminMiddleware::class])
         Route::put('/posts/{id}',                  [PostController::class, 'update']);
         Route::delete('/posts/{id}',               [PostController::class, 'destroy']);
         Route::patch('/posts/{id}/toggle-publish', [PostController::class, 'togglePublish']);
+
+        // Promotional images management
+        Route::get('/promotional-images',           [PromotionalImageController::class, 'adminIndex']);
+        Route::post('/promotional-images',          [PromotionalImageController::class, 'store']);
+        Route::put('/promotional-images/{id}',      [PromotionalImageController::class, 'update']);
+        Route::patch('/promotional-images/{id}/toggle', [PromotionalImageController::class, 'toggleActive']);
+        Route::delete('/promotional-images/{id}',   [PromotionalImageController::class, 'destroy']);
     });

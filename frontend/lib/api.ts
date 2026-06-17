@@ -58,11 +58,23 @@ export const adminApi = {
   updatePost: (id: number, data: Partial<PostPayload>) => api.put(`/admin/posts/${id}`, data),
   deletePost: (id: number) => api.delete(`/admin/posts/${id}`),
   togglePublish: (id: number) => api.patch(`/admin/posts/${id}/toggle-publish`),
+
+  // Promotional Images
+  getPromoImages: () => api.get('/admin/promotional-images'),
+  uploadPromoImage: (formData: FormData) => 
+    api.post('/admin/promotional-images', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }),
+  updatePromoImage: (id: number, data: Partial<PromoImagePayload>) => 
+    api.put(`/admin/promotional-images/${id}`, data),
+  togglePromoImage: (id: number) => api.patch(`/admin/promotional-images/${id}/toggle`),
+  deletePromoImage: (id: number) => api.delete(`/admin/promotional-images/${id}`),
 };
 
 // ── Public ─────────────────────────────────────────────────────────────────
 export const publicApi = {
   getPosts: () => api.get('/posts'),
+  getPromoImages: () => api.get('/promotional-images'),
 };
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -90,4 +102,11 @@ export interface PostPayload {
   body_am: string;
   type: 'announcement' | 'news' | 'tip';
   is_published: boolean;
+}
+
+export interface PromoImagePayload {
+  title?: string;
+  description?: string;
+  display_order?: number;
+  is_active?: boolean;
 }

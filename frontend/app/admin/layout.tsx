@@ -32,6 +32,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { href: '/admin', icon: '📊', label: t.dashboard },
     { href: '/admin/students', icon: '🎓', label: t.students },
     { href: '/admin/posts', icon: '📝', label: t.posts },
+    { href: '/admin/promotions', icon: '📸', label: lang === 'am' ? 'ማስተዋወቂያዎች' : 'Promotions' },
   ];
 
   return (

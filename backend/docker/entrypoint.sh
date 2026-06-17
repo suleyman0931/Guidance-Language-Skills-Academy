@@ -29,6 +29,10 @@ echo "==> Skipping config cache to use runtime environment variables"
 echo "==> Running migrations..."
 php artisan migrate --force
 
+# Create storage link
+echo "==> Creating storage link..."
+php artisan storage:link || true
+
 # Seed only if users table is empty
 USER_COUNT=$(php artisan tinker --execute="echo App\Models\User::count();" 2>/dev/null | tail -1 || echo "0")
 if [ "$USER_COUNT" = "0" ]; then
