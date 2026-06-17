@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useLang } from '@/app/layout';
 import { dict } from '@/lib/dict';
 import { publicApi } from '@/lib/api';
+import PromoGallery from '@/components/PromoGallery';
 
 interface Post {
   id: number; title_en: string; title_am: string;
@@ -123,6 +124,9 @@ export default function LandingPage() {
           ))}
         </div>
       </section>
+
+      {/* ════════════ PROMOTIONAL GALLERY ════════════ */}
+      <PromoGallery />
 
       {/* ════════════ WHO IS IT FOR ════════════ */}
       <section className="max-w-5xl mx-auto px-4 pb-16">
