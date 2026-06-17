@@ -1,12 +1,24 @@
 # Guidance Language & Skills Academy
+
 **Full-stack monorepo** — Next.js 14 frontend (Vercel) + Laravel 11 backend (Render via Docker)
 
+## 📁 Project Structure
 ```
 guidance-academy/
 ├── frontend/          ← Next.js 14 → deploy to Vercel
 ├── backend/           ← Laravel 11 + Docker → deploy to Render
-└── README.md
+├── README.md
+└── DEPLOYMENT_GUIDE.md  ← 📘 Complete deployment instructions
 ```
+
+## 🚀 Quick Deploy
+
+**👉 See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for detailed step-by-step instructions**
+
+### Quick Links:
+- 🔗 **GitHub Repo**: https://github.com/suleyman0931/Guidance-Language-Skills-Academy
+- 🌐 **Deploy Backend**: [render.com](https://render.com) (Free tier)
+- 🌐 **Deploy Frontend**: [vercel.com](https://vercel.com) (Free tier)
 
 ---
 
