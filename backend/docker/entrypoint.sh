@@ -9,10 +9,13 @@ cd /var/www/html
 export PGSSLMODE=prefer
 echo "==> PostgreSQL SSL mode set to: prefer"
 
-# Generate APP_KEY if not set
+# Check if APP_KEY is set, if not, generate it and export (but don't save to .env)
 if [ -z "$APP_KEY" ]; then
-  echo "==> Generating APP_KEY..."
-  php artisan key:generate --force
+  echo "==> APP_KEY not set, generating one..."
+  # Generate a random key in the correct format
+  export APP_KEY="base64:$(openssl rand -base64 32)"
+  echo "==> Generated APP_KEY: $APP_KEY"
+  echo "⚠️  WARNING: APP_KEY was generated at runtime. Set it as environment variable to persist!"
 fi
 
 # Discover packages (important after deployment)
