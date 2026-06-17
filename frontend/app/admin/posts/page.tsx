@@ -12,7 +12,7 @@ interface Post {
   is_published: boolean; created_at: string;
 }
 
-const emptyForm = { title_en: '', title_am: '', body_en: '', body_am: '', type: 'announcement' as const, is_published: true };
+const emptyForm = { title_en: '', title_am: '', body_en: '', body_am: '', type: 'announcement' as 'announcement' | 'news' | 'tip', is_published: true };
 
 export default function AdminPostsPage() {
   const { lang } = useLang();

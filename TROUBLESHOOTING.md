@@ -2,7 +2,22 @@
 
 ## Common Deployment Issues
 
-### 1. ❌ composer.lock Not Found Error
+### 1. ❌ artisan File Not Found
+
+**Error Message:**
+```
+"/artisan": not found
+failed to compute cache key
+```
+
+**Solution:**
+✅ Already fixed! The `artisan` file has been added to the repository.
+
+The `artisan` file is Laravel's CLI tool. It was missing from the initial commit.
+
+---
+
+### 2. ❌ composer.lock Not Found Error
 
 **Error Message:**
 ```
