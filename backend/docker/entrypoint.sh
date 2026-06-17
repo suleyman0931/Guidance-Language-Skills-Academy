@@ -29,16 +29,22 @@ echo "==> Skipping config cache to use runtime environment variables"
 echo "==> Running migrations..."
 php artisan migrate --force
 
+# Check if registrations table actually exists
+echo "==> Verifying database tables..."
+TABLE_CHECK=$(php artisan tinker --execute="try { echo \DB::table('registrations')->count(); } catch (\Exception \$e) { echo 'ERROR'; }" 2>&1 | tail -1)
+
+if [ "$TABLE_CHECK" = "ERROR" ] || [ -z "$TABLE_CHECK" ]; then
+  echo "⚠️  Tables missing! Running fresh migration..."
+  php artisan migrate:fresh --seed --force
+else
+  echo "✅ Database tables verified"
+fi
+
 # Create storage link
 echo "==> Creating storage link..."
 php artisan storage:link || true
 
-# Seed only if users table is empty
-USER_COUNT=$(php artisan tinker --execute="echo App\Models\User::count();" 2>/dev/null | tail -1 || echo "0")
-if [ "$USER_COUNT" = "0" ]; then
-  echo "==> Seeding database (first run)..."
-  php artisan db:seed --force
-fi
+echo "==> Database setup complete!"
 
 echo "==> Starting services..."
 exec /usr/bin/supervisord -c /etc/supervisord.conf
