@@ -5,18 +5,10 @@ echo "==> Starting Guidance Academy API..."
 
 cd /var/www/html
 
-# Parse DATABASE_URL if set and extract components
-if [ -n "$DATABASE_URL" ]; then
-  echo "==> Using DATABASE_URL for database connection"
-  # Set PGSSLMODE environment variable for PostgreSQL client
-  export PGSSLMODE=require
-fi
-
-# Set PostgreSQL SSL mode if not already set
-if [ -z "$PGSSLMODE" ] && [ "$DB_CONNECTION" = "pgsql" ]; then
-  export PGSSLMODE=require
-  echo "==> Set PGSSLMODE=require for PostgreSQL"
-fi
+# Set PostgreSQL SSL mode BEFORE anything else
+export PGSSLMODE=require
+export PGSSLROOTCERT=system
+echo "==> PostgreSQL SSL mode set to: require"
 
 # Generate APP_KEY if not set
 if [ -z "$APP_KEY" ]; then
@@ -28,15 +20,11 @@ fi
 echo "==> Discovering packages..."
 php artisan package:discover --ansi || true
 
-# Cache config for performance (only in production)
-if [ "$APP_ENV" = "production" ]; then
-  echo "==> Caching configuration..."
-  php artisan config:cache || true
-  php artisan route:cache  || true
-  php artisan view:cache   || true
-fi
+# DO NOT cache config in production - it breaks SSL and other runtime configs
+# Cache will use whatever is in .env at build time, not runtime env vars
+echo "==> Skipping config cache to use runtime environment variables"
 
-# Run migrations
+# Run migrations with SSL environment set
 echo "==> Running migrations..."
 php artisan migrate --force
 
