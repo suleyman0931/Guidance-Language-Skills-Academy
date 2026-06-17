@@ -17,7 +17,7 @@ services:
       - key: FRONTEND_URL
         value: https://GuidanceAcademy.vercel.app
       - key: DB_CONNECTION
-        value: mysql
+        value: pgsql
       - key: DB_HOST
         fromDatabase:
           name: guidance-academy-db

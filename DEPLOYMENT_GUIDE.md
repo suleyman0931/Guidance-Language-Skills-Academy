@@ -21,20 +21,24 @@ Before deploying, make sure you have:
 1. Go to [https://render.com](https://render.com)
 2. Sign up with GitHub (this makes connecting repos easier)
 
-### Step 2: Create MySQL Database
-1. In Render dashboard, click **"New +"** → **"MySQL"**
+### Step 2: Create PostgreSQL Database
+1. In Render dashboard, click **"New +"** → **"PostgreSQL"**
 2. Configure:
    - **Name**: `guidance-academy-db`
    - **Database**: `guidance_academy`
-   - **Region**: Choose closest to you
-   - **Plan**: **Free**
+   - **Region**: Choose closest to you (e.g., Oregon US-West)
+   - **PostgreSQL Version**: 16
+   - **Plan**: **Free** (requires credit card for verification)
 3. Click **"Create Database"**
-4. **Save these credentials** (you'll see them on the database info page):
-   - Internal Database URL
-   - Host
-   - Port
-   - Username
-   - Password
+4. **Copy the connection details** from the database info page:
+   - **Internal Database URL** (starts with `postgres://`)
+   - **Host** (e.g., `dpg-xxxxx-a.oregon-postgres.render.com`)
+   - **Port**: `5432`
+   - **Database**: `guidance_academy`
+   - **Username**: (auto-generated)
+   - **Password**: (auto-generated)
+
+> **Note**: Render requires a credit card even for free tier. The free database includes 256 MB RAM and 1 GB storage.
 
 ### Step 3: Deploy Backend Web Service
 1. Click **"New +"** → **"Web Service"**
@@ -58,9 +62,9 @@ In the **"Environment"** section, add these variables:
 | `APP_DEBUG` | `false` | Disable debug in production |
 | `APP_KEY` | `base64:GENERATE_THIS` | See instructions below ⬇️ |
 | `APP_URL` | `https://guidance-academy-api.onrender.com` | Your Render URL |
-| `DB_CONNECTION` | `mysql` | Database type |
+| `DB_CONNECTION` | `pgsql` | Database type (PostgreSQL) |
 | `DB_HOST` | *from database info* | Database host |
-| `DB_PORT` | `3306` | Database port |
+| `DB_PORT` | `5432` | Database port |
 | `DB_DATABASE` | `guidance_academy` | Database name |
 | `DB_USERNAME` | *from database info* | Database username |
 | `DB_PASSWORD` | *from database info* | Database password |

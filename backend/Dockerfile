@@ -4,10 +4,11 @@ RUN apk add --no-cache \
     nginx supervisor curl \
     libpng-dev libjpeg-turbo-dev freetype-dev \
     libzip-dev zip unzip git \
-    oniguruma-dev icu-dev mysql-client
+    oniguruma-dev icu-dev \
+    postgresql-dev postgresql-client
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip intl opcache
+    && docker-php-ext-install pdo pdo_pgsql pgsql mbstring exif pcntl bcmath gd zip intl opcache
 
 COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 

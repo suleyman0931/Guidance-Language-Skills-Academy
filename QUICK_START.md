@@ -3,7 +3,7 @@
 ## Backend → Render (5 minutes)
 
 1. **Sign up**: [render.com](https://render.com) with GitHub
-2. **New MySQL**: Name: `guidance-academy-db`, Plan: Free
+2. **New PostgreSQL**: Name: `guidance-academy-db`, Plan: Free (requires credit card)
 3. **New Web Service**: 
    - Repo: `Guidance-Language-Skills-Academy`
    - Root: `backend`
@@ -13,7 +13,9 @@
    APP_KEY=base64:YOUR_GENERATED_KEY
    APP_ENV=production
    APP_DEBUG=false
+   DB_CONNECTION=pgsql
    DB_HOST=[from database]
+   DB_PORT=5432
    DB_DATABASE=guidance_academy
    DB_USERNAME=[from database]
    DB_PASSWORD=[from database]
