@@ -55,7 +55,7 @@ export default function AboutPage() {
             <div className="w-24 h-24 rounded-2xl overflow-hidden"
               style={{ border: '2px solid rgba(196,168,79,0.3)' }}>
               <img 
-                src="frontend\public\suleyman.png" 
+                src="/suleyman.png" 
                 alt="Suleyman Abdu"
                 className="w-full h-full object-cover"
               />
