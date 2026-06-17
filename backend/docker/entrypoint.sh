@@ -5,6 +5,19 @@ echo "==> Starting Guidance Academy API..."
 
 cd /var/www/html
 
+# Parse DATABASE_URL if set and extract components
+if [ -n "$DATABASE_URL" ]; then
+  echo "==> Using DATABASE_URL for database connection"
+  # Set PGSSLMODE environment variable for PostgreSQL client
+  export PGSSLMODE=require
+fi
+
+# Set PostgreSQL SSL mode if not already set
+if [ -z "$PGSSLMODE" ] && [ "$DB_CONNECTION" = "pgsql" ]; then
+  export PGSSLMODE=require
+  echo "==> Set PGSSLMODE=require for PostgreSQL"
+fi
+
 # Generate APP_KEY if not set
 if [ -z "$APP_KEY" ]; then
   echo "==> Generating APP_KEY..."
