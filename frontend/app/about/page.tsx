@@ -77,7 +77,7 @@ export default function AboutPage() {
             <p className="text-white/70 leading-relaxed mb-6">{t.trainerBio}</p>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { icon: '📍', label: lang === 'am' ? 'አድራሻ' : 'Location', val: lang === 'am' ? 'ጅማ፣ ኢትዮጵያ' : 'Jimma, Ethiopia' },
+                { icon: '📍', label: lang === 'am' ? 'አድራሻ' : 'Location', val: lang === 'am' ? 'ሃርቡ፣ ኢትዮጵያ' : 'Harbu, Ethiopia' },
                 { icon: '🌍', label: lang === 'am' ? 'ቋንቋ' : 'Languages', val: lang === 'am' ? 'አማርኛ / English' : 'Amharic / English' },
                 { icon: '🎓', label: lang === 'am' ? 'ሙያ' : 'Expertise', val: lang === 'am' ? 'ቋንቋ ትምህርት' : 'Language Training' },
                 { icon: '🏫', label: lang === 'am' ? 'ት/ቤት' : 'Venue', val: lang === 'am' ? 'ሃርቡ ሁ/ደ ት/ቤት' : 'Harbu High School' },
