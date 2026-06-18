@@ -61,6 +61,43 @@ Route::get('/debug/storage', function() {
     }
 });
 
+// Debug endpoint - test file upload without auth
+Route::post('/debug/test-upload', function(Request $request) {
+    try {
+        \Log::info('Test upload attempt', [
+            'has_file' => $request->hasFile('image'),
+            'files' => $request->allFiles(),
+        ]);
+
+        if (!$request->hasFile('image')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No image file in request'
+            ], 400);
+        }
+
+        $image = $request->file('image');
+        $filename = 'test_' . time() . '.' . $image->getClientOriginalExtension();
+        
+        $path = $image->storeAs('promotional_images', $filename, 'public');
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Test upload successful!',
+            'path' => $path,
+            'url' => '/storage/' . $path,
+            'size' => $image->getSize(),
+            'mime' => $image->getMimeType(),
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString(),
+        ], 500);
+    }
+});
+
 // Public: registration
 Route::post('/registrations', [RegistrationController::class, 'store']);
 
