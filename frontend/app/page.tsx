@@ -5,6 +5,7 @@ import { useLang } from '@/app/layout';
 import { dict } from '@/lib/dict';
 import { publicApi } from '@/lib/api';
 import PromoGallery from '@/components/PromoGallery';
+import { useAuthStore } from '@/store/authStore';
 
 interface Post {
   id: number; title_en: string; title_am: string;
@@ -24,6 +25,7 @@ export default function LandingPage() {
   const t   = dict[lang];
   const nav = t.nav;
   const [posts, setPosts] = useState<Post[]>([]);
+  const { user } = useAuthStore();
 
   useEffect(() => {
     publicApi.getPosts().then(r => setPosts(r.data.data || [])).catch(() => {});
@@ -79,19 +81,35 @@ export default function LandingPage() {
             ))}
           </div>
 
-          {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/register"
-              className="group relative inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-black text-base transition-all duration-200 hover:scale-105 hover:shadow-2xl"
-              style={{ background: 'linear-gradient(90deg,#C4A84F,#F0D080)', color: '#0D1B4B', boxShadow: '0 8px 32px rgba(196,168,79,0.35)' }}>
-              ✏️ {t.hero.cta}
-            </Link>
-            <Link href="/login"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-semibold text-base transition-all duration-200 hover:bg-white/10"
-              style={{ color: 'rgba(255,255,255,0.8)', border: '1px solid rgba(255,255,255,0.2)' }}>
-              🔑 {t.hero.ctaSub}
-            </Link>
-          </div>
+          {/* CTA buttons - Only show if user is NOT logged in */}
+          {!user && (
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link href="/register"
+                className="group relative inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-black text-base transition-all duration-200 hover:scale-105 hover:shadow-2xl"
+                style={{ background: 'linear-gradient(90deg,#C4A84F,#F0D080)', color: '#0D1B4B', boxShadow: '0 8px 32px rgba(196,168,79,0.35)' }}>
+                ✏️ {t.hero.cta}
+              </Link>
+              <Link href="/login"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-semibold text-base transition-all duration-200 hover:bg-white/10"
+                style={{ color: 'rgba(255,255,255,0.8)', border: '1px solid rgba(255,255,255,0.2)' }}>
+                🔑 {t.hero.ctaSub}
+              </Link>
+            </div>
+          )}
+          
+          {/* Welcome message for logged-in users */}
+          {user && (
+            <div className="text-center">
+              <p className="text-2xl font-black mb-2" style={{ color: '#C4A84F' }}>
+                {lang === 'am' ? 'እንኳን ደህና መጡ!' : 'Welcome Back!'} 👋
+              </p>
+              <Link href="/home"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-black text-base transition-all duration-200 hover:scale-105 hover:shadow-2xl"
+                style={{ background: 'linear-gradient(90deg,#C4A84F,#F0D080)', color: '#0D1B4B' }}>
+                {lang === 'am' ? 'ወደ ዳሽቦርድ ይሂዱ' : 'Go to Dashboard'} →
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 
@@ -156,34 +174,36 @@ export default function LandingPage() {
         </section>
       )}
 
-      {/* ════════════ BIG CTA BANNER ════════════ */}
-      <section className="max-w-5xl mx-auto px-4 pb-20">
-        <div className="rounded-3xl p-10 text-center relative overflow-hidden"
-          style={{ background: 'linear-gradient(135deg,rgba(196,168,79,0.18),rgba(240,208,128,0.08))', border: '1px solid rgba(196,168,79,0.3)' }}>
-          <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full opacity-20 pointer-events-none"
-            style={{ background: 'radial-gradient(circle,#C4A84F,transparent)' }} />
-          <p className="text-3xl font-black text-white mb-2">
-            {lang === 'am' ? 'ዛሬ ይቀላቀሉ!' : 'Join Us Today!'}
-          </p>
-          <p className="text-white/60 mb-6 text-sm">
-            {lang === 'am'
-              ? 'ወደ ጋይዳንስ ቋንቋ እና ክህሎት አካዴሚ ቤተሰብ ይቀላቀሉ'
-              : 'Become part of the Guidance Language & Skills Academy family'}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/register"
-              className="px-8 py-3.5 rounded-xl font-black text-sm hover:scale-105 transition-transform"
-              style={{ background: 'linear-gradient(90deg,#C4A84F,#F0D080)', color: '#0D1B4B' }}>
-              ✏️ {nav.register}
-            </Link>
-            <Link href="/about"
-              className="px-8 py-3.5 rounded-xl font-semibold text-sm hover:bg-white/10 transition-all"
-              style={{ color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>
-              {nav.about} →
-            </Link>
+      {/* ════════════ BIG CTA BANNER - Only show if user is NOT logged in ════════════ */}
+      {!user && (
+        <section className="max-w-5xl mx-auto px-4 pb-20">
+          <div className="rounded-3xl p-10 text-center relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg,rgba(196,168,79,0.18),rgba(240,208,128,0.08))', border: '1px solid rgba(196,168,79,0.3)' }}>
+            <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full opacity-20 pointer-events-none"
+              style={{ background: 'radial-gradient(circle,#C4A84F,transparent)' }} />
+            <p className="text-3xl font-black text-white mb-2">
+              {lang === 'am' ? 'ዛሬ ይቀላቀሉ!' : 'Join Us Today!'}
+            </p>
+            <p className="text-white/60 mb-6 text-sm">
+              {lang === 'am'
+                ? 'ወደ ጋይዳንስ ቋንቋ እና ክህሎት አካዴሚ ቤተሰብ ይቀላቀሉ'
+                : 'Become part of the Guidance Language & Skills Academy family'}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link href="/register"
+                className="px-8 py-3.5 rounded-xl font-black text-sm hover:scale-105 transition-transform"
+                style={{ background: 'linear-gradient(90deg,#C4A84F,#F0D080)', color: '#0D1B4B' }}>
+                ✏️ {nav.register}
+              </Link>
+              <Link href="/about"
+                className="px-8 py-3.5 rounded-xl font-semibold text-sm hover:bg-white/10 transition-all"
+                style={{ color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>
+                {nav.about} →
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
     </div>
   );
