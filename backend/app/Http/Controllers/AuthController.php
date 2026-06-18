@@ -58,29 +58,46 @@ class AuthController extends Controller
      */
     public function login(Request $request): JsonResponse
     {
-        $v = Validator::make($request->all(), [
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
-        if ($v->fails()) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+        try {
+            $v = Validator::make($request->all(), [
+                'username' => 'required|string',
+                'password' => 'required|string',
+            ]);
+            if ($v->fails()) {
+                return response()->json(['message' => 'Invalid credentials'], 401);
+            }
+
+            $user = User::where('username', strtolower($request->username))->first();
+
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json(['message' => 'Invalid username or password'], 401);
+            }
+
+            // Revoke old tokens to keep it clean
+            $user->tokens()->delete();
+            $token = $user->createToken('ga_token')->plainTextToken;
+
+            return response()->json([
+                'message' => 'Login successful',
+                'user'    => $this->userResource($user),
+                'token'   => $token,
+            ]);
+        } catch (\Throwable $e) {
+            \Log::error('Login failed', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
+            
+            return response()->json([
+                'message' => 'Login failed: ' . $e->getMessage(),
+                'error' => config('app.debug') ? [
+                    'exception' => get_class($e),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                ] : null
+            ], 500);
         }
-
-        $user = User::where('username', strtolower($request->username))->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Invalid username or password'], 401);
-        }
-
-        // Revoke old tokens to keep it clean
-        $user->tokens()->delete();
-        $token = $user->createToken('ga_token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Login successful',
-            'user'    => $this->userResource($user),
-            'token'   => $token,
-        ]);
     }
 
     /**
