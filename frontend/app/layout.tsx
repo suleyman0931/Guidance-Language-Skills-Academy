@@ -37,9 +37,9 @@ function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 flex-shrink-0">
           <img src="/logo-icon.png" alt="GA" className="w-10 h-10 flex-shrink-0" />
-          <div className="hidden sm:block">
-            <p className="text-white font-black text-sm tracking-widest leading-none">GUIDANCE</p>
-            <p style={{ color: '#C4A84F', fontSize: '8px', letterSpacing: '.15em', textTransform: 'uppercase', lineHeight: 1.2 }}>
+          <div>
+            <p className="text-white font-black text-sm tracking-widest leading-none mb-1">GUIDANCE</p>
+            <p style={{ color: '#C4A84F', fontSize: '9px', letterSpacing: '.18em', textTransform: 'uppercase', lineHeight: 1, marginTop: '2px' }}>
               Language & Skills Academy
             </p>
           </div>
@@ -54,22 +54,28 @@ function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
         </div>
 
         {/* Desktop right actions */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-3">
           <button onClick={() => setLang(lang === 'en' ? 'am' : 'en')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:bg-white/10"
             style={{ background: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.12)' }}>
             🌐 {t.switchLang}
           </button>
 
           {user ? (
-            <>
-              <span className="text-white/50 text-xs px-1">{user.name_en.split(' ')[0]}</span>
+            <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                  style={{ background: 'linear-gradient(135deg, #C4A84F, #F0D080)', color: '#0D1B4B' }}>
+                  {user.name_en.charAt(0).toUpperCase()}
+                </div>
+                <span className="text-white/70 text-sm font-medium">{user.name_en.split(' ')[0]}</span>
+              </div>
               <button onClick={handleLogout}
-                className="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all"
-                style={{ background: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                className="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all hover:opacity-80"
+                style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.3)' }}>
                 {t.logout}
               </button>
-            </>
+            </div>
           ) : (
             <>
               <Link href="/login"
@@ -103,33 +109,49 @@ function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
 
       {/* Mobile dropdown */}
       {menuOpen && (
-        <div className="md:hidden border-t px-4 py-4 flex flex-col gap-1"
-          style={{ borderColor: 'rgba(196,168,79,0.15)', background: 'rgba(9,15,42,0.98)' }}>
-          <MobLink href="/"      label={t.home}      active={isActive('/')}      onClick={close} />
-          <MobLink href="/about" label={t.about}     active={isActive('/about')} onClick={close} />
-          {user && <MobLink href="/home" label={t.dashboard} active={isActive('/home')} onClick={close} />}
-          {user && isAdmin && <MobLink href="/admin" label={t.admin} active={pathname.startsWith('/admin')} onClick={close} />}
+        <div className="md:hidden fixed right-4 top-16 w-64 rounded-xl shadow-2xl border overflow-hidden animate-fsu"
+          style={{ 
+            borderColor: 'rgba(196,168,79,0.2)', 
+            background: 'rgba(13,27,75,0.98)',
+            backdropFilter: 'blur(20px)'
+          }}>
+          <div className="px-4 py-4 flex flex-col gap-1">
+            <MobLink href="/"      label={t.home}      active={isActive('/')}      onClick={close} />
+            <MobLink href="/about" label={t.about}     active={isActive('/about')} onClick={close} />
+            {user && <MobLink href="/home" label={t.dashboard} active={isActive('/home')} onClick={close} />}
+            {user && isAdmin && <MobLink href="/admin" label={t.admin} active={pathname.startsWith('/admin')} onClick={close} />}
 
-          <div className="border-t mt-2 pt-3 flex flex-col gap-2" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
-            {user ? (
-              <button onClick={() => { handleLogout(); close(); }}
-                className="text-left text-sm text-white/60 py-1">
-                {t.logout}
-              </button>
-            ) : (
-              <>
-                <Link href="/login" onClick={close}
-                  className="block text-center py-2.5 rounded-xl text-sm font-semibold"
-                  style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.8)', border: '1px solid rgba(255,255,255,0.15)' }}>
-                  {t.login}
-                </Link>
-                <Link href="/register" onClick={close}
-                  className="block text-center py-2.5 rounded-xl text-sm font-black"
-                  style={{ background: 'linear-gradient(90deg,#C4A84F,#F0D080)', color: '#0D1B4B' }}>
-                  {t.register}
-                </Link>
-              </>
-            )}
+            <div className="border-t mt-2 pt-3 flex flex-col gap-2" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+              {user ? (
+                <>
+                  <div className="flex items-center gap-2 px-3 py-2 mb-1">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                      style={{ background: 'linear-gradient(135deg, #C4A84F, #F0D080)', color: '#0D1B4B' }}>
+                      {user.name_en.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="text-white/70 text-sm">{user.name_en}</span>
+                  </div>
+                  <button onClick={() => { handleLogout(); close(); }}
+                    className="text-center py-2.5 rounded-xl text-sm font-semibold transition-all"
+                    style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.3)' }}>
+                    {t.logout}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" onClick={close}
+                    className="block text-center py-2.5 rounded-xl text-sm font-semibold"
+                    style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.8)', border: '1px solid rgba(255,255,255,0.15)' }}>
+                    {t.login}
+                  </Link>
+                  <Link href="/register" onClick={close}
+                    className="block text-center py-2.5 rounded-xl text-sm font-black"
+                    style={{ background: 'linear-gradient(90deg,#C4A84F,#F0D080)', color: '#0D1B4B' }}>
+                    {t.register}
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
       )}
