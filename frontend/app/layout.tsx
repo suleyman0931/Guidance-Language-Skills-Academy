@@ -63,18 +63,18 @@ function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
 
           {user ? (
             <div className="flex items-center gap-2.5">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
-                  style={{ background: 'linear-gradient(135deg, #C4A84F, #F0D080)', color: '#0D1B4B' }}>
-                  {user.name_en.charAt(0).toUpperCase()}
-                </div>
-                <span className="text-white/70 text-sm font-medium">{user.name_en.split(' ')[0]}</span>
-              </div>
               <button onClick={handleLogout}
                 className="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all hover:opacity-80"
                 style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.3)' }}>
                 {t.logout}
               </button>
+              <div className="flex items-center gap-2">
+                <span className="text-white/70 text-sm font-medium">{user.name_en.split(' ')[0]}</span>
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                  style={{ background: 'linear-gradient(135deg, #C4A84F, #F0D080)', color: '#0D1B4B' }}>
+                  {user.name_en.charAt(0).toUpperCase()}
+                </div>
+              </div>
             </div>
           ) : (
             <>
@@ -124,18 +124,18 @@ function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
             <div className="border-t mt-2 pt-3 flex flex-col gap-2" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
               {user ? (
                 <>
-                  <div className="flex items-center gap-2 px-3 py-2 mb-1">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
-                      style={{ background: 'linear-gradient(135deg, #C4A84F, #F0D080)', color: '#0D1B4B' }}>
-                      {user.name_en.charAt(0).toUpperCase()}
-                    </div>
-                    <span className="text-white/70 text-sm">{user.name_en}</span>
-                  </div>
                   <button onClick={() => { handleLogout(); close(); }}
                     className="text-center py-2.5 rounded-xl text-sm font-semibold transition-all"
                     style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.3)' }}>
                     {t.logout}
                   </button>
+                  <div className="flex items-center gap-2 px-3 py-2 mt-1">
+                    <span className="text-white/70 text-sm flex-1">{user.name_en}</span>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                      style={{ background: 'linear-gradient(135deg, #C4A84F, #F0D080)', color: '#0D1B4B' }}>
+                      {user.name_en.charAt(0).toUpperCase()}
+                    </div>
+                  </div>
                 </>
               ) : (
                 <>
