@@ -45,6 +45,12 @@ else
   echo "✅ Database tables verified"
 fi
 
+# Create storage directories with proper permissions
+echo "==> Ensuring storage directories exist..."
+mkdir -p storage/app/public/promotional_images
+chown -R www-data:www-data storage
+chmod -R 775 storage
+
 # Create storage link
 echo "==> Creating storage link..."
 php artisan storage:link || true
