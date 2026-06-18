@@ -5,7 +5,7 @@ import { dict } from '@/lib/dict';
 import { useAuthStore } from '@/store/authStore';
 
 const CONTACT_INFO = {
-  email: 'GuidanceAcademy@gmail.com',
+  email: 'guidanceacademyoffcial@gmail.com',
   phone: '0909918195',
   phone2: '0915260722',
   address: 'Harbu High School, Harbu',

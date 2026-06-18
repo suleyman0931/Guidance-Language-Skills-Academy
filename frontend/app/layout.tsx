@@ -32,9 +32,9 @@ function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
   return (
     <nav className="sticky top-0 z-50"
       style={{ background: 'rgba(13,27,75,0.97)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(196,168,79,0.15)' }}>
-      <div className="max-w-6xl mx-auto px-4 py-0 flex items-center justify-between" style={{ height: '60px' }}>
+      <div className="w-full px-6 py-0 flex items-center justify-between" style={{ height: '60px' }}>
 
-        {/* Logo */}
+        {/* Logo - Far Left */}
         <Link href="/" className="flex items-center gap-3 flex-shrink-0">
           <img src="/logo-icon.png" alt="GA" className="w-10 h-10 flex-shrink-0" />
           <div>
@@ -45,8 +45,8 @@ function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
           </div>
         </Link>
 
-        {/* Desktop centre links */}
-        <div className="hidden md:flex items-center gap-1">
+        {/* Desktop centre links - Absolute Center */}
+        <div className="hidden md:flex items-center gap-1 absolute left-1/2 transform -translate-x-1/2">
           <NavLink href="/"       active={isActive('/')}       label={t.home} />
           <NavLink href="/about"  active={isActive('/about')}  label={t.about} />
           <NavLink href="/contact" active={isActive('/contact')} label={dict[lang].footer.links.contact} />
@@ -54,8 +54,8 @@ function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
           {user && isAdmin && <NavLink href="/admin" active={pathname.startsWith('/admin')} label={t.admin} />}
         </div>
 
-        {/* Desktop right actions */}
-        <div className="hidden md:flex items-center gap-3">
+        {/* Desktop right actions - Far Right */}
+        <div className="hidden md:flex items-center gap-3 flex-shrink-0">
           <button onClick={() => setLang(lang === 'en' ? 'am' : 'en')}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:bg-white/10"
             style={{ background: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.12)' }}>
