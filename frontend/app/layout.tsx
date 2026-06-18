@@ -49,6 +49,7 @@ function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
         <div className="hidden md:flex items-center gap-1">
           <NavLink href="/"       active={isActive('/')}       label={t.home} />
           <NavLink href="/about"  active={isActive('/about')}  label={t.about} />
+          <NavLink href="/contact" active={isActive('/contact')} label={dict[lang].footer.links.contact} />
           {user && <NavLink href="/home" active={isActive('/home')} label={t.dashboard} />}
           {user && isAdmin && <NavLink href="/admin" active={pathname.startsWith('/admin')} label={t.admin} />}
         </div>
@@ -118,6 +119,7 @@ function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
           <div className="px-4 py-4 flex flex-col gap-1">
             <MobLink href="/"      label={t.home}      active={isActive('/')}      onClick={close} />
             <MobLink href="/about" label={t.about}     active={isActive('/about')} onClick={close} />
+            <MobLink href="/contact" label={dict[lang].footer.links.contact} active={isActive('/contact')} onClick={close} />
             {user && <MobLink href="/home" label={t.dashboard} active={isActive('/home')} onClick={close} />}
             {user && isAdmin && <MobLink href="/admin" label={t.admin} active={pathname.startsWith('/admin')} onClick={close} />}
 
