@@ -44,6 +44,11 @@ class PromotionalImageController extends Controller
         ]);
 
         try {
+            // Ensure storage directory exists
+            if (!Storage::disk('public')->exists('promotional_images')) {
+                Storage::disk('public')->makeDirectory('promotional_images');
+            }
+
             // Handle file upload
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
@@ -74,9 +79,11 @@ class PromotionalImageController extends Controller
             ], 400);
 
         } catch (\Exception $e) {
+            \Log::error('Promotional image upload failed: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to upload image: ' . $e->getMessage()
+                'message' => 'Failed to upload image: ' . $e->getMessage(),
+                'trace' => config('app.debug') ? $e->getTraceAsString() : null
             ], 500);
         }
     }

@@ -34,6 +34,7 @@ RUN composer dump-autoload --optimize --no-scripts
 # Create necessary directories and set permissions
 RUN mkdir -p storage/framework/{cache,sessions,views} \
              storage/logs \
+             storage/app/public/promotional_images \
              bootstrap/cache \
     && chown -R www-data:www-data /var/www/html \
     && chmod -R 755 storage bootstrap/cache \
