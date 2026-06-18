@@ -184,60 +184,63 @@ function PostFormModal({ editing, form, setForm, errors, saving, onSave, onClose
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(4px)' }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="glass-dark w-full max-w-2xl p-6 animate-scale-in max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between mb-5">
-          <h2 className="text-xl font-black text-white">{editing ? t.updatePost : t.newPost}</h2>
-          <button onClick={onClose} className="text-white/40 hover:text-white text-xl">✕</button>
+      <div className="glass-dark w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl animate-scale-in">
+        <div className="sticky top-0 z-10 flex items-center justify-between p-4 sm:p-6 border-b"
+          style={{ background: 'rgba(13,27,75,0.95)', backdropFilter: 'blur(8px)', borderColor: 'rgba(196,168,79,0.2)' }}>
+          <h2 className="text-lg sm:text-xl font-black text-white">{editing ? t.updatePost : t.newPost}</h2>
+          <button onClick={onClose} className="text-white/40 hover:text-white text-2xl w-8 h-8 flex items-center justify-center">✕</button>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <FormField label={t.postTitleEn} error={(errors as any).title_en}>
-            <input className="input-field" value={form.title_en} onChange={set('title_en')} placeholder="e.g. Important Announcement" />
-          </FormField>
-          <FormField label={t.postTitleAm} error={(errors as any).title_am}>
-            <input className="input-field" value={form.title_am} onChange={set('title_am')} placeholder="ለምሳሌ ጠቃሚ ማስታወቂያ" />
-          </FormField>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <FormField label={t.postBodyEn} error={(errors as any).body_en}>
-            <textarea className="input-field resize-none" rows={5} value={form.body_en}
-              onChange={set('body_en')} placeholder="Write the content in English…" />
-          </FormField>
-          <FormField label={t.postBodyAm} error={(errors as any).body_am}>
-            <textarea className="input-field resize-none" rows={5} value={form.body_am}
-              onChange={set('body_am')} placeholder="ይዘቱን በአማርኛ ይፃፉ…" />
-          </FormField>
-        </div>
-
-        <div className="flex items-center gap-4 mb-6 flex-wrap">
-          <div>
-            <label className="text-xs font-bold uppercase tracking-widest mb-1.5 block" style={{ color: '#C4A84F' }}>
-              {t.postType}
-            </label>
-            <div className="relative">
-              <select className="input-field appearance-none pr-8 w-44" value={form.type} onChange={set('type')}>
-                <option value="announcement">📢 Announcement</option>
-                <option value="news">📰 News</option>
-                <option value="tip">💡 Study Tip</option>
-              </select>
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: '#8B6914' }}>▼</span>
-            </div>
+        <div className="p-4 sm:p-6">
+          <div className="grid gap-4 mb-4">
+            <FormField label={t.postTitleEn} error={(errors as any).title_en}>
+              <input className="input-field w-full" value={form.title_en} onChange={set('title_en')} placeholder="e.g. Important Announcement" />
+            </FormField>
+            <FormField label={t.postTitleAm} error={(errors as any).title_am}>
+              <input className="input-field w-full" value={form.title_am} onChange={set('title_am')} placeholder="ለምሳሌ ጠቃሚ ማስታወቂያ" />
+            </FormField>
           </div>
-          <label className="flex items-center gap-2 cursor-pointer mt-5">
-            <input type="checkbox" checked={form.is_published} onChange={set('is_published')}
-              className="w-4 h-4 accent-yellow-400" />
-            <span className="text-white/70 text-sm">{t.postPublish}</span>
-          </label>
-        </div>
 
-        <div className="flex gap-3 justify-end">
-          <button onClick={onClose} className="btn-ghost px-5 py-2.5 text-sm">
-            {lang === 'am' ? 'ሰርዝ' : 'Cancel'}
-          </button>
-          <button onClick={onSave} disabled={saving} className="btn-gold px-5 py-2.5 text-sm flex items-center gap-2">
-            {saving ? <><Spinner /> {lang === 'am' ? 'እየተቀመጠ…' : 'Saving…'}</> : (editing ? t.updatePost : t.savePost)}
-          </button>
+          <div className="grid gap-4 mb-4">
+            <FormField label={t.postBodyEn} error={(errors as any).body_en}>
+              <textarea className="input-field w-full resize-none" rows={6} value={form.body_en}
+                onChange={set('body_en')} placeholder="Write the content in English…" />
+            </FormField>
+            <FormField label={t.postBodyAm} error={(errors as any).body_am}>
+              <textarea className="input-field w-full resize-none" rows={6} value={form.body_am}
+                onChange={set('body_am')} placeholder="ይዘቱን በአማርኛ ይፃፉ…" />
+            </FormField>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
+            <div className="w-full sm:w-auto">
+              <label className="text-xs font-bold uppercase tracking-widest mb-1.5 block" style={{ color: '#C4A84F' }}>
+                {t.postType}
+              </label>
+              <div className="relative">
+                <select className="input-field appearance-none pr-8 w-full sm:w-56" value={form.type} onChange={set('type')}>
+                  <option value="announcement">📢 Announcement</option>
+                  <option value="news">📰 News</option>
+                  <option value="tip">💡 Study Tip</option>
+                </select>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: '#8B6914' }}>▼</span>
+              </div>
+            </div>
+            <label className="flex items-center gap-2 cursor-pointer sm:mt-5">
+              <input type="checkbox" checked={form.is_published} onChange={set('is_published')}
+                className="w-4 h-4 accent-yellow-400" />
+              <span className="text-white/70 text-sm">{t.postPublish}</span>
+            </label>
+          </div>
+
+          <div className="flex flex-col-reverse sm:flex-row gap-3 justify-end">
+            <button onClick={onClose} className="btn-ghost px-5 py-2.5 text-sm w-full sm:w-auto">
+              {lang === 'am' ? 'ሰርዝ' : 'Cancel'}
+            </button>
+            <button onClick={onSave} disabled={saving} className="btn-gold px-5 py-2.5 text-sm flex items-center justify-center gap-2 w-full sm:w-auto">
+              {saving ? <><Spinner /> {lang === 'am' ? 'እየተቀመጠ…' : 'Saving…'}</> : (editing ? t.updatePost : t.savePost)}
+            </button>
+          </div>
         </div>
       </div>
     </div>
