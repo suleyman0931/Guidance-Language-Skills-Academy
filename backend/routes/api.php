@@ -38,6 +38,29 @@ Route::get('/debug/tables', function() {
     }
 });
 
+// Debug endpoint - check storage
+Route::get('/debug/storage', function() {
+    try {
+        $storagePath = storage_path('app/public/promotional_images');
+        $publicPath = public_path('storage');
+        
+        return response()->json([
+            'status' => 'ok',
+            'storage_path' => $storagePath,
+            'storage_exists' => is_dir($storagePath),
+            'storage_writable' => is_writable(storage_path('app/public')),
+            'public_path' => $publicPath,
+            'public_link_exists' => is_link($publicPath),
+            'disk_config' => config('filesystems.disks.public'),
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+});
+
 // Public: registration
 Route::post('/registrations', [RegistrationController::class, 'store']);
 
