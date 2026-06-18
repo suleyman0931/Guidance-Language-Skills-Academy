@@ -11,22 +11,37 @@ interface PromoImage {
   is_active: boolean;
 }
 
+// Static promotional images from /public/promo/ folder
+const staticPromoImages: PromoImage[] = [
+  { id: 1, title: 'Guidance Card - Amharic', image_url: '/promo/businescardguaydanceback amharic v1.png', description: '', display_order: 1, is_active: true },
+  { id: 2, title: 'Guidance Card - English', image_url: '/promo/guaydancevlast to chage the link.png', description: '', display_order: 2, is_active: true },
+  { id: 3, title: 'Special Offer - 5000 Birr', image_url: '/promo/guaydancevlast to chage the link - 5000.png', description: '', display_order: 3, is_active: true },
+  { id: 4, title: 'Amharic Promotion - 500', image_url: '/promo/amharic back ላስት 500.png', description: '', display_order: 4, is_active: true },
+  { id: 5, title: 'Amharic Promotion', image_url: '/promo/amharic back ላስት.png', description: '', display_order: 5, is_active: true },
+];
+
 export default function PromoGallery() {
   const [images, setImages] = useState<PromoImage[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [loading, setLoading] = useState(true);
 
-  // Fetch promotional images from API
+  // Fetch promotional images from API, fallback to static images
   useEffect(() => {
     publicApi.getPromoImages()
       .then(res => {
         const data = res.data.data || [];
-        setImages(data);
+        if (data.length > 0) {
+          setImages(data);
+        } else {
+          // Fallback to static images from /public/promo/
+          setImages(staticPromoImages);
+        }
         setLoading(false);
       })
       .catch(() => {
-        setImages([]);
+        // Use static images on error
+        setImages(staticPromoImages);
         setLoading(false);
       });
   }, []);
@@ -74,6 +89,14 @@ export default function PromoGallery() {
   if (images.length === 0) return null;
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  
+  // Check if image is from static files or API
+  const getImageSrc = (img: PromoImage) => {
+    if (img.image_url.startsWith('/promo/')) {
+      return img.image_url; // Static image from /public
+    }
+    return `${API_URL}${img.image_url}`; // API image
+  };
 
   return (
     <section className="max-w-5xl mx-auto px-4 py-16">
@@ -95,9 +118,9 @@ export default function PromoGallery() {
               }`}
             >
               <img
-                src={`${API_URL}${img.image_url}`}
+                src={getImageSrc(img)}
                 alt={img.title || `Promotion ${index + 1}`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain bg-gray-900"
               />
               {/* Title Overlay */}
               {img.title && (
