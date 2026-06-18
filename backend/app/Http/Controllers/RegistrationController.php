@@ -16,7 +16,7 @@ class RegistrationController extends Controller
         $v = Validator::make($request->all(), [
             'name_en'  => 'required|string|max:120',
             'name_am'  => 'required|string|max:120',
-            'phone'    => 'required|string|regex:/^(09|07)\d{8}$/|unique:registrations,phone',
+            'phone'    => ['required', 'string', 'regex:/^(09|07)\d{8}$/', 'unique:registrations,phone'],
             'grade'    => 'required|string|in:grade7,grade9,grade11,other',
             'purpose'  => 'required|string|max:1000',
             'referral' => 'required|string|in:telegram,friends,banner,other',
