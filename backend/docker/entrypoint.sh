@@ -1,4 +1,4 @@
-#!/bin/sh
+# #!/bin/sh
 set -e
 
 echo "==> Starting Guidance Academy API..."
@@ -47,6 +47,7 @@ fi
 
 # Create storage directories with proper permissions
 echo "==> Ensuring storage directories exist..."
+mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs
 mkdir -p storage/app/public/promotional_images
 chown -R www-data:www-data storage
 chmod -R 775 storage
