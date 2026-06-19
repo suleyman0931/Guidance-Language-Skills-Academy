@@ -38,7 +38,7 @@ export default function HomePage() {
       .finally(() => setLoading(false));
   }, [user, router]);
 
-  const firstName = user?.name_en?.split(' ')[0] || '';
+  const firstName = user?.username || '';
   const filtered  = filter === 'all' ? posts : posts.filter(p => p.type === filter);
 
   return (

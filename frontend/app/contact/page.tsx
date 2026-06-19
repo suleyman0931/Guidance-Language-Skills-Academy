@@ -16,7 +16,7 @@ export default function ContactPage() {
   const t = dict[lang].contact;
   const { user } = useAuthStore();
   
-  const [name, setName] = useState(user?.name_en || '');
+  const [name, setName] = useState(user?.username || '');
   const [message, setMessage] = useState('');
 
   const handleEmailClick = () => {

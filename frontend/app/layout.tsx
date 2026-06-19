@@ -72,9 +72,9 @@ function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
                   style={{ background: 'linear-gradient(135deg, #C4A84F, #F0D080)', color: '#0D1B4B' }}>
-                  {user.name_en.charAt(0).toUpperCase()}
+                  {user.username.charAt(0).toUpperCase()}
                 </div>
-                <span className="text-white/70 text-sm font-medium">{user.name_en.split(' ')[0]}</span>
+                <span className="text-white/70 text-sm font-medium">{user.username}</span>
               </div>
             </div>
           ) : (
@@ -134,9 +134,9 @@ function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
                   <div className="flex items-center gap-2 px-3 py-2 mt-1">
                     <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
                       style={{ background: 'linear-gradient(135deg, #C4A84F, #F0D080)', color: '#0D1B4B' }}>
-                      {user.name_en.charAt(0).toUpperCase()}
+                      {user.username.charAt(0).toUpperCase()}
                     </div>
-                    <span className="text-white/70 text-sm flex-1">{user.name_en}</span>
+                    <span className="text-white/70 text-sm flex-1">{user.username}</span>
                   </div>
                 </>
               ) : (
