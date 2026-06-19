@@ -61,7 +61,8 @@ class RegistrationController extends Controller
             $query->where('status', $request->status);
         }
 
-        if ($request->filled('payment_status')) {
+        // Only filter by payment_status if column exists (migration has run)
+        if ($request->filled('payment_status') && \Schema::hasColumn('registrations', 'payment_status')) {
             $query->where('payment_status', $request->payment_status);
         }
 
