@@ -40,7 +40,7 @@ class AuthController extends Controller
             'user' => [
                 'id' => $user->id,
                 'username' => $user->username,
-                'is_admin' => $user->is_admin,
+                'is_admin' => $user->role === 'admin',
             ],
         ]);
     }
@@ -64,7 +64,7 @@ class AuthController extends Controller
             'user' => [
                 'id' => $user->id,
                 'username' => $user->username,
-                'is_admin' => $user->is_admin,
+                'is_admin' => $user->role === 'admin',
                 'registration_id' => $user->registration_id,
             ],
         ]);
@@ -103,7 +103,7 @@ class AuthController extends Controller
             'registration_id' => $request->registration_id,
             'username' => $request->username,
             'password' => Hash::make($request->password),
-            'is_admin' => false,
+            'role' => 'student',
         ]);
 
         // Create token
@@ -115,7 +115,7 @@ class AuthController extends Controller
             'user' => [
                 'id' => $user->id,
                 'username' => $user->username,
-                'is_admin' => $user->is_admin,
+                'is_admin' => $user->role === 'admin',
             ],
         ], 201);
     }
