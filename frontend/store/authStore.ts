@@ -3,10 +3,7 @@ import { create } from 'zustand';
 interface User {
   id: number;
   username: string;
-  name_en: string;
-  name_am: string;
-  phone: string;
-  role: 'admin' | 'student';
+  is_admin: boolean;
 }
 
 interface AuthState {
@@ -28,7 +25,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       localStorage.setItem('ga_token', token);
       localStorage.setItem('ga_user', JSON.stringify(user));
     }
-    set({ user, token, isAdmin: user.role === 'admin' });
+    set({ user, token, isAdmin: user.is_admin });
   },
 
   clearAuth: () => {
@@ -46,7 +43,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (token && userStr) {
       try {
         const user = JSON.parse(userStr) as User;
-        set({ user, token, isAdmin: user.role === 'admin' });
+        set({ user, token, isAdmin: user.is_admin });
       } catch { /* ignore */ }
     }
   },

@@ -28,7 +28,7 @@ export default function LoginPage() {
       const { user, token } = res.data;
       setAuth(user, token);
       toast.success(lang === 'am' ? 'እንኳን ደህና ገቡ!' : 'Welcome back!');
-      router.push(user.role === 'admin' ? '/admin' : '/home');
+      router.push(user.is_admin ? '/admin' : '/home');
     } catch {
       setError(t.wrongCreds);
     } finally {
