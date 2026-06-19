@@ -15,7 +15,7 @@
 #   # Generate a random key in the correct format
 #   export APP_KEY="base64:$(openssl rand -base64 32)"
 #   echo "==> Generated APP_KEY: $APP_KEY"
-#   echo "⚠️  WARNING: APP_KEY was generated at runtime. Set it as environment variable to persist!"
+#   echo "âš ï¸  WARNING: APP_KEY was generated at runtime. Set it as environment variable to persist!"
 # fi
 
 # # Temporarily enable debug mode to diagnose issues
@@ -39,10 +39,10 @@
 # TABLE_CHECK=$(php artisan tinker --execute="try { echo \DB::table('registrations')->count(); } catch (\Exception \$e) { echo 'ERROR'; }" 2>&1 | tail -1)
 
 # if [ "$TABLE_CHECK" = "ERROR" ] || [ -z "$TABLE_CHECK" ]; then
-#   echo "⚠️  Tables missing! Running fresh migration..."
+#   echo "âš ï¸  Tables missing! Running fresh migration..."
 #   php artisan migrate:fresh --seed --force
 # else
-#   echo "✅ Database tables verified"
+#   echo "âœ… Database tables verified"
 # fi
 
 # # Create storage directories with proper permissions
@@ -76,7 +76,7 @@ if [ -z "$APP_KEY" ]; then
   # Generate a random key in the correct format
   export APP_KEY="base64:$(openssl rand -base64 32)"
   echo "==> Generated APP_KEY: $APP_KEY"
-  echo "⚠️  WARNING: APP_KEY was generated at runtime. Set it as environment variable to persist!"
+  echo "âš ï¸  WARNING: APP_KEY was generated at runtime. Set it as environment variable to persist!"
 fi
 
 # Temporarily enable debug mode to diagnose issues
@@ -100,10 +100,10 @@ echo "==> Verifying database tables..."
 TABLE_CHECK=$(php artisan tinker --execute="try { echo \DB::table('registrations')->count(); } catch (\Exception \$e) { echo 'ERROR'; }" 2>&1 | tail -1)
 
 if [ "$TABLE_CHECK" = "ERROR" ] || [ -z "$TABLE_CHECK" ]; then
-  echo "⚠️  Tables missing! Running fresh migration..."
+  echo "âš ï¸  Tables missing! Running fresh migration..."
   php artisan migrate:fresh --seed --force
 else
-  echo "✅ Database tables verified"
+  echo "âœ… Database tables verified"
 fi
 
 # Create storage directories with proper permissions
