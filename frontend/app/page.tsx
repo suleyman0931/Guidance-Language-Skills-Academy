@@ -113,6 +113,9 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ════════════ PROMOTIONAL GALLERY ════════════ */}
+      <PromoGallery />
+
       {/* ════════════ COURSE INFO CARDS ════════════ */}
       <section className="max-w-5xl mx-auto px-4 py-16">
         <SectionLabel label={t.info.sectionTitle} />
@@ -142,9 +145,6 @@ export default function LandingPage() {
           ))}
         </div>
       </section>
-
-      {/* ════════════ PROMOTIONAL GALLERY ════════════ */}
-      <PromoGallery />
 
       {/* ════════════ WHO IS IT FOR ════════════ */}
       <section className="max-w-5xl mx-auto px-4 pb-16">

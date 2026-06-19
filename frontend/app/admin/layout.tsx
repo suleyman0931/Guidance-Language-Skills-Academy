@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAuthStore } from '@/store/authStore';
@@ -12,6 +12,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const { lang } = useLang();
   const t = dict[lang].admin;
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => { hydrate(); }, [hydrate]);
   useEffect(() => {
@@ -36,10 +37,31 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   ];
 
   return (
-    <div className="min-h-screen flex" style={{ background: '#080f2a' }}>
+    <div className="min-h-screen flex relative" style={{ background: '#080f2a' }}>
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="fixed top-4 left-4 z-50 md:hidden w-10 h-10 rounded-lg flex items-center justify-center text-white"
+        style={{ background: 'rgba(196,168,79,0.9)' }}
+      >
+        {sidebarOpen ? '✕' : '☰'}
+      </button>
+
+      {/* Overlay for mobile */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-56 flex-shrink-0 border-r border-white/10 p-4 flex flex-col gap-2"
-        style={{ background: 'rgba(13,27,75,0.8)' }}>
+      <aside className={`
+        w-56 flex-shrink-0 border-r border-white/10 p-4 flex flex-col gap-2
+        fixed md:relative inset-y-0 left-0 z-40 transition-transform duration-300
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}
+        style={{ background: 'rgba(13,27,75,0.95)' }}>
         <p className="text-xs font-bold uppercase tracking-widest mb-3 px-2" style={{ color: '#C4A84F' }}>
           Admin Panel
         </p>
@@ -49,6 +71,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             : pathname.startsWith(link.href);
           return (
             <Link key={link.href} href={link.href}
+              onClick={() => setSidebarOpen(false)}
               className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all"
               style={active
                 ? { background: 'rgba(196,168,79,0.2)', color: '#C4A84F', border: '1px solid rgba(196,168,79,0.3)' }
@@ -66,7 +89,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main */}
-      <main className="flex-1 p-6 overflow-auto">{children}</main>
+      <main className="flex-1 p-6 overflow-auto md:ml-0 pt-16 md:pt-6">{children}</main>
     </div>
   );
 }

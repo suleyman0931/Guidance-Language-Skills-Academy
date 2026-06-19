@@ -46,13 +46,13 @@ export default function PromoGallery() {
       });
   }, []);
 
-  // Auto-advance slides every 5 seconds
+  // Auto-advance slides every 3 seconds (faster)
   useEffect(() => {
     if (!isAutoPlaying || images.length <= 1) return;
     
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 5000);
+    }, 3000); // Changed from 5000 to 3000
 
     return () => clearInterval(interval);
   }, [isAutoPlaying, images.length]);
@@ -99,8 +99,8 @@ export default function PromoGallery() {
   };
 
   return (
-    <section className="max-w-5xl mx-auto px-4 py-16">
-      <div className="flex items-center gap-3 mb-6">
+    <section className="max-w-6xl mx-auto px-4 py-8">
+      <div className="flex items-center gap-3 mb-4">
         <span className="w-1 h-6 rounded-full" style={{ background: 'linear-gradient(180deg,#C4A84F,#F0D080)' }} />
         <h2 className="text-xl font-black text-white">
           📸 Gallery & Promotions
@@ -108,8 +108,8 @@ export default function PromoGallery() {
       </div>
 
       <div className="relative glass-dark rounded-2xl overflow-hidden">
-        {/* Main Image Display */}
-        <div className="relative aspect-video w-full overflow-hidden">
+        {/* Main Image Display - Reduced height */}
+        <div className="relative w-full overflow-hidden" style={{ height: '320px' }}>
           {images.map((img, index) => (
             <div
               key={img.id}
