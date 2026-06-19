@@ -34,6 +34,9 @@ export default function LandingPage() {
   return (
     <div style={{ background: 'linear-gradient(160deg,#0a1230 0%,#0d1b4b 40%,#111f55 100%)' }}>
 
+      {/* ════════════ PROMOTIONAL GALLERY - AT TOP ════════════ */}
+      <PromoGallery />
+
       {/* ════════════ HERO ════════════ */}
       <section className="relative overflow-hidden">
         {/* Decorative blobs */}
@@ -112,9 +115,6 @@ export default function LandingPage() {
           )}
         </div>
       </section>
-
-      {/* ════════════ PROMOTIONAL GALLERY ════════════ */}
-      <PromoGallery />
 
       {/* ════════════ COURSE INFO CARDS ════════════ */}
       <section className="max-w-5xl mx-auto px-4 py-16">

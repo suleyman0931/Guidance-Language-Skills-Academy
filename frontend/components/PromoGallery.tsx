@@ -13,11 +13,11 @@ interface PromoImage {
 
 // Static promotional images from /public/promo/ folder
 const staticPromoImages: PromoImage[] = [
-  { id: 1, title: 'Guidance Card - Amharic', image_url: '/promo/businescardguaydanceback amharic v1.png', description: '', display_order: 1, is_active: true },
-  { id: 2, title: 'Guidance Card - English', image_url: '/promo/guaydancevlast to chage the link.png', description: '', display_order: 2, is_active: true },
-  { id: 3, title: 'Special Offer - 5000 Birr', image_url: '/promo/guaydancevlast to chage the link - 5000.png', description: '', display_order: 3, is_active: true },
-  { id: 4, title: 'Amharic Promotion - 500', image_url: '/promo/amharic back ላስት 500.png', description: '', display_order: 4, is_active: true },
-  { id: 5, title: 'Amharic Promotion', image_url: '/promo/amharic back ላስት.png', description: '', display_order: 5, is_active: true },
+  { id: 1, title: 'Ezedin Certification', image_url: '/promo/ezedincertificationv2.png', description: '', display_order: 1, is_active: true },
+  { id: 2, title: 'Feyruza Certificate', image_url: '/promo/feyruza final v2.png', description: '', display_order: 2, is_active: true },
+  { id: 3, title: 'Temere Certificate', image_url: '/promo/temerefinal v2.png', description: '', display_order: 3, is_active: true },
+  { id: 4, title: 'Special Offer - 5000 Birr', image_url: '/promo/guaydancevlast to chage the link - 5000.png', description: '', display_order: 4, is_active: true },
+  { id: 5, title: 'Amharic Promotion - 500', image_url: '/promo/amharic back ላስት 500.png', description: '', display_order: 5, is_active: true },
 ];
 
 export default function PromoGallery() {
@@ -99,8 +99,8 @@ export default function PromoGallery() {
   };
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-8">
-      <div className="flex items-center gap-3 mb-4">
+    <section className="max-w-6xl mx-auto px-4 pt-6 pb-4">
+      <div className="flex items-center gap-3 mb-3">
         <span className="w-1 h-6 rounded-full" style={{ background: 'linear-gradient(180deg,#C4A84F,#F0D080)' }} />
         <h2 className="text-xl font-black text-white">
           📸 Gallery & Promotions
@@ -108,8 +108,8 @@ export default function PromoGallery() {
       </div>
 
       <div className="relative glass-dark rounded-2xl overflow-hidden">
-        {/* Main Image Display - Reduced height */}
-        <div className="relative w-full overflow-hidden" style={{ height: '320px' }}>
+        {/* Main Image Display - Even smaller height */}
+        <div className="relative w-full overflow-hidden" style={{ height: '200px' }}>
           {images.map((img, index) => (
             <div
               key={img.id}

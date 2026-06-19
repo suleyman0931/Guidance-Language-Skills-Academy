@@ -41,7 +41,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Mobile Menu Button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-4 left-4 z-50 md:hidden w-10 h-10 rounded-lg flex items-center justify-center text-white"
+        className="fixed top-20 left-4 z-50 md:hidden w-10 h-10 rounded-lg flex items-center justify-center text-white"
         style={{ background: 'rgba(196,168,79,0.9)' }}
       >
         {sidebarOpen ? '✕' : '☰'}
