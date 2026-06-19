@@ -46,11 +46,13 @@ export const registrationApi = {
 
 // ── Admin ─────────────────────────────────────────────────────────────────────
 export const adminApi = {
-  getStudents: (params?: { page?: number; search?: string; status?: string }) =>
+  getStudents: (params?: { page?: number; search?: string; status?: string; payment_status?: string }) =>
     api.get('/admin/students', { params }),
   getStudent: (id: number) => api.get(`/admin/students/${id}`),
   updateStatus: (id: number, status: string) =>
     api.patch(`/admin/students/${id}/status`, { status }),
+  updatePaymentStatus: (id: number, payment_status: string) =>
+    api.patch(`/admin/students/${id}/payment-status`, { payment_status }),
   deleteStudent: (id: number) => api.delete(`/admin/students/${id}`),
 
   getPosts: (params?: { page?: number }) => api.get('/admin/posts', { params }),

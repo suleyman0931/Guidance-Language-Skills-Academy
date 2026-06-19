@@ -122,11 +122,12 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware(['auth:sanctum', \App\Http\Middleware\AdminMiddleware::class])
     ->prefix('admin')
     ->group(function () {
-        Route::get('/students',               [RegistrationController::class, 'index']);
-        Route::get('/students/{id}',          [RegistrationController::class, 'show']);
-        Route::patch('/students/{id}/status', [RegistrationController::class, 'updateStatus']);
-        Route::delete('/students/{id}',       [RegistrationController::class, 'destroy']);
-        Route::get('/stats',                  [RegistrationController::class, 'stats']);
+        Route::get('/students',                        [RegistrationController::class, 'index']);
+        Route::get('/students/{id}',                   [RegistrationController::class, 'show']);
+        Route::patch('/students/{id}/status',          [RegistrationController::class, 'updateStatus']);
+        Route::patch('/students/{id}/payment-status',  [RegistrationController::class, 'updatePaymentStatus']);
+        Route::delete('/students/{id}',                [RegistrationController::class, 'destroy']);
+        Route::get('/stats',                           [RegistrationController::class, 'stats']);
 
         Route::get('/posts',                       [PostController::class, 'index']);
         Route::post('/posts',                      [PostController::class, 'store']);

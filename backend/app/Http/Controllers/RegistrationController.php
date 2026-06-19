@@ -61,6 +61,10 @@ class RegistrationController extends Controller
             $query->where('status', $request->status);
         }
 
+        if ($request->filled('payment_status')) {
+            $query->where('payment_status', $request->payment_status);
+        }
+
         $data = $query->paginate(20);
 
         // Attach username from users table
@@ -92,6 +96,18 @@ class RegistrationController extends Controller
 
         $reg = Registration::findOrFail($id);
         $reg->update(['status' => $request->status]);
+        return response()->json(['data' => $reg]);
+    }
+
+    public function updatePaymentStatus(Request $request, int $id): JsonResponse
+    {
+        $v = Validator::make($request->all(), [
+            'payment_status' => 'required|in:unpaid,paid',
+        ]);
+        if ($v->fails()) return response()->json(['errors' => $v->errors()], 422);
+
+        $reg = Registration::findOrFail($id);
+        $reg->update(['payment_status' => $request->payment_status]);
         return response()->json(['data' => $reg]);
     }
 

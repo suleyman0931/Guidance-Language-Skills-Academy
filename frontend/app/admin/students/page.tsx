@@ -9,6 +9,7 @@ interface Student {
   id: number; name_en: string; name_am: string; phone: string;
   grade: string; purpose: string; referral: string;
   status: 'pending' | 'approved' | 'rejected';
+  payment_status: 'unpaid' | 'paid';
   username?: string; created_at: string;
 }
 
@@ -25,17 +26,18 @@ export default function AdminStudentsPage() {
   const [page, setPage]         = useState(1);
   const [search, setSearch]     = useState('');
   const [status, setStatus]     = useState('');
+  const [paymentStatus, setPaymentStatus] = useState('');
   const [loading, setLoading]   = useState(true);
   const [selected, setSelected] = useState<Student | null>(null);
   const [deleting, setDeleting] = useState<number | null>(null);
 
   const load = useCallback(() => {
     setLoading(true);
-    adminApi.getStudents({ page, search, status })
+    adminApi.getStudents({ page, search, status, payment_status: paymentStatus })
       .then(r => { setStudents(r.data.data || []); setMeta(r.data.meta || { total: 0, last_page: 1 }); })
       .catch(() => toast.error('Failed to load students'))
       .finally(() => setLoading(false));
-  }, [page, search, status]);
+  }, [page, search, status, paymentStatus]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -51,6 +53,15 @@ export default function AdminStudentsPage() {
       toast.success(`Student ${newStatus}`);
       setStudents(ss => ss.map(s => s.id === id ? { ...s, status: newStatus as any } : s));
       if (selected?.id === id) setSelected(s => s ? { ...s, status: newStatus as any } : s);
+    } catch { toast.error('Update failed'); }
+  };
+
+  const handlePaymentStatus = async (id: number, newPaymentStatus: string) => {
+    try {
+      await adminApi.updatePaymentStatus(id, newPaymentStatus);
+      toast.success(`Payment marked as ${newPaymentStatus}`);
+      setStudents(ss => ss.map(s => s.id === id ? { ...s, payment_status: newPaymentStatus as any } : s));
+      if (selected?.id === id) setSelected(s => s ? { ...s, payment_status: newPaymentStatus as any } : s);
     } catch { toast.error('Update failed'); }
   };
 
@@ -71,6 +82,12 @@ export default function AdminStudentsPage() {
     { v: 'approved', l: t.filterApproved }, { v: 'rejected', l: t.filterRejected },
   ];
 
+  const paymentFilters = [
+    { v: '', l: lang === 'am' ? 'ሁሉም' : 'All' },
+    { v: 'paid', l: lang === 'am' ? '💰 ተከፍሏል' : '💰 Paid' },
+    { v: 'unpaid', l: lang === 'am' ? '❌ አልተከፈለም' : '❌ Unpaid' },
+  ];
+
   return (
     <div className="animate-fsu">
       <div className="flex items-center justify-between mb-6">
@@ -81,26 +98,53 @@ export default function AdminStudentsPage() {
       </div>
 
       {/* Search + filters */}
-      <div className="glass p-4 mb-5 flex flex-col md:flex-row gap-3">
-        <div className="relative flex-1">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30">🔍</span>
-          <input
-            className="w-full pl-9 pr-4 py-2.5 rounded-xl text-sm text-white bg-white/10 border border-white/15 outline-none focus:border-yellow-400/60 placeholder-white/30"
-            placeholder={t.search}
-            value={search}
-            onChange={e => { setSearch(e.target.value); setPage(1); }}
-          />
+      <div className="glass p-4 mb-5 space-y-3">
+        <div className="flex flex-col md:flex-row gap-3">
+          <div className="relative flex-1">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30">🔍</span>
+            <input
+              className="w-full pl-9 pr-4 py-2.5 rounded-xl text-sm text-white bg-white/10 border border-white/15 outline-none focus:border-yellow-400/60 placeholder-white/30"
+              placeholder={t.search}
+              value={search}
+              onChange={e => { setSearch(e.target.value); setPage(1); }}
+            />
+          </div>
         </div>
-        <div className="flex gap-2 flex-wrap">
-          {filters.map(f => (
-            <button key={f.v} onClick={() => { setStatus(f.v); setPage(1); }}
-              className="px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-wide transition-all"
-              style={status === f.v
-                ? { background: '#C4A84F', color: '#0D1B4B' }
-                : { background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.12)' }}>
-              {f.l}
-            </button>
-          ))}
+        
+        {/* Enrollment Status Filters */}
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'rgba(196,168,79,0.8)' }}>
+            {lang === 'am' ? 'የመመዝገብ ሁኔታ' : 'Enrollment Status'}
+          </p>
+          <div className="flex gap-2 flex-wrap">
+            {filters.map(f => (
+              <button key={f.v} onClick={() => { setStatus(f.v); setPage(1); }}
+                className="px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-wide transition-all"
+                style={status === f.v
+                  ? { background: '#C4A84F', color: '#0D1B4B' }
+                  : { background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                {f.l}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Payment Status Filters */}
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'rgba(196,168,79,0.8)' }}>
+            {lang === 'am' ? 'የክፍያ ሁኔታ' : 'Payment Status'}
+          </p>
+          <div className="flex gap-2 flex-wrap">
+            {paymentFilters.map(f => (
+              <button key={f.v} onClick={() => { setPaymentStatus(f.v); setPage(1); }}
+                className="px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-wide transition-all"
+                style={paymentStatus === f.v
+                  ? { background: '#C4A84F', color: '#0D1B4B' }
+                  : { background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                {f.l}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -120,7 +164,7 @@ export default function AdminStudentsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10">
-                  {[t.colName, t.colPhone, t.colGrade, t.colReferral, t.colStatus, t.colDate, t.colActions]
+                  {[t.colName, t.colPhone, t.colGrade, t.colReferral, t.colStatus, 'Payment', t.colDate, t.colActions]
                     .map(h => (
                       <th key={h} className="text-left px-4 py-3 text-xs font-bold uppercase tracking-wider"
                         style={{ color: 'rgba(196,168,79,0.8)' }}>{h}</th>
@@ -141,6 +185,9 @@ export default function AdminStudentsPage() {
                     <td className="px-4 py-3 text-white/70 capitalize">{s.referral}</td>
                     <td className="px-4 py-3">
                       <StatusBadge status={s.status} />
+                    </td>
+                    <td className="px-4 py-3">
+                      <PaymentBadge status={s.payment_status || 'unpaid'} />
                     </td>
                     <td className="px-4 py-3 text-white/40 text-xs whitespace-nowrap">
                       {new Date(s.created_at).toLocaleDateString()}
@@ -184,6 +231,7 @@ export default function AdminStudentsPage() {
         <StudentModal student={selected} lang={lang} t={t}
           onClose={() => setSelected(null)}
           onStatus={handleStatus}
+          onPaymentStatus={handlePaymentStatus}
           onDelete={handleDelete} />
       )}
     </div>
@@ -208,7 +256,20 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-function StudentModal({ student: s, lang, t, onClose, onStatus, onDelete }: any) {
+function PaymentBadge({ status }: { status: string }) {
+  const config = status === 'paid'
+    ? { bg: 'rgba(34,197,94,0.15)', color: '#22c55e', text: '💰 Paid' }
+    : { bg: 'rgba(239,68,68,0.15)', color: '#ef4444', text: '❌ Unpaid' };
+  
+  return (
+    <span className="text-xs font-bold px-2.5 py-1 rounded-full inline-block"
+      style={{ background: config.bg, color: config.color }}>
+      {config.text}
+    </span>
+  );
+}
+
+function StudentModal({ student: s, lang, t, onClose, onStatus, onPaymentStatus, onDelete }: any) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
@@ -245,8 +306,12 @@ function StudentModal({ student: s, lang, t, onClose, onStatus, onDelete }: any)
         </div>
 
         <div className="flex items-center justify-between">
-          <StatusBadge status={s.status} />
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
+            <StatusBadge status={s.status} />
+            <PaymentBadge status={s.payment_status || 'unpaid'} />
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            {/* Enrollment Status Buttons */}
             {s.status !== 'approved' && (
               <button onClick={() => onStatus(s.id, 'approved')}
                 className="px-3 py-1.5 rounded-lg text-xs font-bold"
@@ -261,6 +326,23 @@ function StudentModal({ student: s, lang, t, onClose, onStatus, onDelete }: any)
                 {t.reject}
               </button>
             )}
+            
+            {/* Payment Status Buttons */}
+            {s.payment_status !== 'paid' && (
+              <button onClick={() => onPaymentStatus(s.id, 'paid')}
+                className="px-3 py-1.5 rounded-lg text-xs font-bold"
+                style={{ background: 'rgba(34,197,94,0.2)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.3)' }}>
+                💰 Mark Paid
+              </button>
+            )}
+            {s.payment_status !== 'unpaid' && (
+              <button onClick={() => onPaymentStatus(s.id, 'unpaid')}
+                className="px-3 py-1.5 rounded-lg text-xs font-bold"
+                style={{ background: 'rgba(239,68,68,0.2)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.3)' }}>
+                ❌ Mark Unpaid
+              </button>
+            )}
+            
             <button onClick={() => { onDelete(s.id); onClose(); }}
               className="px-3 py-1.5 rounded-lg text-xs font-bold"
               style={{ background: 'rgba(239,68,68,0.2)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.3)' }}>

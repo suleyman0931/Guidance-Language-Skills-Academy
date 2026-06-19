@@ -18,6 +18,7 @@ class Registration extends Model
         'referral',
         'lang',
         'status',
+        'payment_status',
     ];
 
     protected $casts = [
@@ -29,6 +30,10 @@ class Registration extends Model
     const STATUS_PENDING  = 'pending';
     const STATUS_APPROVED = 'approved';
     const STATUS_REJECTED = 'rejected';
+
+    // Payment status constants
+    const PAYMENT_UNPAID = 'unpaid';
+    const PAYMENT_PAID   = 'paid';
 
     public function scopePending($query)
     {
