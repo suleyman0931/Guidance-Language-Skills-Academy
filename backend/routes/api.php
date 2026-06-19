@@ -17,6 +17,10 @@ Route::get('/health', fn() => response()->json([
 Route::get('/debug/tables', function() {
     try {
         $tables = \DB::select("SELECT table_name FROM information_schema.tables WHERE table_schema='public' ORDER BY table_name");
+        
+        // Check if payment_status column exists
+        $hasPaymentStatus = \Schema::hasColumn('registrations', 'payment_status');
+        
         $counts = [
             'registrations' => \DB::table('registrations')->count(),
             'users' => \DB::table('users')->count(),
@@ -24,11 +28,33 @@ Route::get('/debug/tables', function() {
             'promotional_images' => \DB::table('promotional_images')->count(),
             'personal_access_tokens' => \DB::table('personal_access_tokens')->count(),
         ];
+        
         return response()->json([
             'status' => 'ok',
             'tables' => $tables,
             'counts' => $counts,
             'admin_exists' => \DB::table('users')->where('username', 'admin')->exists(),
+            'payment_status_column_exists' => $hasPaymentStatus,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+});
+
+// Debug endpoint - manually run pending migrations
+Route::get('/debug/migrate', function() {
+    try {
+        \Artisan::call('migrate', ['--force' => true]);
+        $output = \Artisan::output();
+        
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Migrations executed',
+            'output' => $output,
+            'payment_status_exists' => \Schema::hasColumn('registrations', 'payment_status'),
         ]);
     } catch (\Exception $e) {
         return response()->json([
