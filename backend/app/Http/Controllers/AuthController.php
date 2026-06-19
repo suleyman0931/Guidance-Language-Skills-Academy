@@ -85,12 +85,10 @@ class AuthController extends Controller
             return response()->json(['message' => 'Validation failed', 'errors' => $v->errors()], 422);
         }
 
-        // Check if registration is approved
+        // Check if registration exists
         $registration = Registration::findOrFail($request->registration_id);
         
-        if ($registration->status !== 'approved') {
-            return response()->json(['message' => 'Registration not approved yet'], 403);
-        }
+        // No approval check - allow anyone to create account after registration
 
         // Check if username already exists for this registration
         $existingUser = User::where('registration_id', $request->registration_id)->first();
